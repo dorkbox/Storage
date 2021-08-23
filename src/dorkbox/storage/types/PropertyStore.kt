@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 dorkbox, llc
+ * Copyright 2021 dorkbox, llc
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,157 +13,95 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dorkbox.network.storage.types
+package dorkbox.storage.types
 
-import dorkbox.netUtil.IP
-import dorkbox.network.storage.GenericStore
-import dorkbox.network.storage.SettingsStore
-import dorkbox.network.storage.StorageType
-import dorkbox.util.Sys
-import dorkbox.util.properties.SortedProperties
+import com.esotericsoftware.kryo.Kryo
+import dorkbox.storage.AccessFunc
 import mu.KLogger
-import org.agrona.collections.Object2ObjectHashMap
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
-import java.io.IOException
-import java.net.InetAddress
 import java.util.*
 
 /**
- * Java property files
+ * Java property file storage system
  */
-class PropertyStore(val dbFile: File, val logger: KLogger): GenericStore {
-    companion object {
-        fun type(dbFile: String) : StorageType {
-            return LmdbStore.type(File(dbFile))
-        }
+class PropertyStore(
+    dbFile: File,
+    autoLoad: Boolean,
+    readOnly: Boolean,
+    readOnlyViolent: Boolean,
+    logger: KLogger,
+    onNewKryo: Kryo.() -> Unit,
+    onLoad: AccessFunc?,
+    onSave: AccessFunc?,
+) : StringStore(dbFile, autoLoad, readOnly, readOnlyViolent, logger, onNewKryo, onLoad, onSave) {
 
-        fun type(dbFile: File) = object : StorageType {
-            override fun create(logger: KLogger): SettingsStore {
-                return SettingsStore(logger, PropertyStore (dbFile, logger))
+    private val propertiesOnDisk = object : Properties() {
+        override fun keys(): Enumeration<Any> {
+            val keysEnum = super.keys()
+
+            val vector = Vector<Any>(size())
+            while (keysEnum.hasMoreElements()) {
+                vector.add(keysEnum.nextElement())
             }
+
+            vector.sortWith(comparator)
+            return vector.elements()
         }
     }
-
-    @Volatile
-    private var lastModifiedTime = 0L
-    private val loadedProps = Object2ObjectHashMap<Any, ByteArray>()
 
     init {
         load()
-        logger.info("Property file storage initialized at: '$dbFile'")
+        init("Property file storage initialized at: '$dbFile'")
     }
 
+    override fun onSave(key: Any, value: Any?) {
+        propertiesOnDisk[key] = value
+    }
 
-    private fun load() {
-        // if we cannot load, then we create a properties file.
-        if (!dbFile.canRead() && !dbFile.createNewFile()) {
-            throw IOException("Cannot create file")
-        }
+    override fun doLoad() {
+        FileInputStream(dbFile).use { fileStream ->
+            propertiesOnDisk.load(fileStream)
 
-        val input = FileInputStream(dbFile)
-
-        try {
-            val properties = Properties()
-            properties.load(input)
-            lastModifiedTime = dbFile.lastModified()
-
-            properties.entries.forEach {
-                val key = it.key as String
-                val value = it.value  as String
-
-                when (key) {
-                    SettingsStore.saltKey -> loadedProps[SettingsStore.saltKey] = Sys.hexToBytes(value)
-                    SettingsStore.privateKey -> loadedProps[SettingsStore.privateKey] = Sys.hexToBytes(value)
-                    else -> {
-                        val address: InetAddress? = IP.fromString(key)
-                        if (address != null) {
-                            loadedProps[address] = Sys.hexToBytes(value)
-                        } else {
-                            logger.error("Unable to parse property file: $dbFile $key $value")
-                        }
+            propertiesOnDisk.entries.forEach { (k, v) ->
+                if (k == versionTag) {
+                    loadFunc(k, (v as String).toLong())
+                    propertiesOnDisk[k] = v
+                } else {
+                    try {
+                        propertiesOnDisk[k] = v
+                        onLoadFunc(k, v, loadFunc)
+                    } catch (e: Exception) {
+                        logger.error("Unable to parse property ($dbFile) [$k] : $v", e)
                     }
                 }
             }
-            properties.clear()
-        } catch (e: IOException) {
-            logger.error("Cannot load properties!", e)
-            e.printStackTrace()
-        } finally {
-            input.close()
         }
     }
 
-    override operator fun get(key: Any): ByteArray? {
-        // we want to check the last modified time when getting, because if we edit the on-disk file, we want to those changes
-        val lastModifiedTime = dbFile.lastModified()
-        if (this.lastModifiedTime != lastModifiedTime) {
-            // we want to reload the info
-            load()
+    override fun doSave() {
+        FileOutputStream(dbFile, false).use { fos ->
+            propertiesOnDisk.store(fos, "Storage Version: ${getVersion()}")
+            fos.flush()
         }
-
-
-        val any = loadedProps[key]
-        if (any != null) {
-            return any
-        }
-
-        return null
     }
 
     /**
-     * Setting to NULL removes it
+     * Deletes all contents of this storage, and if applicable, it's location on disk.
      */
-    override operator fun set(key: Any, bytes: ByteArray?) {
-        val hasChanged = if (bytes == null) {
-            loadedProps.remove(key) != null
-        } else {
-            val prev = loadedProps.put(key, bytes)
-            !prev.contentEquals(bytes)
-        }
+    override fun deleteAll() {
+        super.deleteAll()
 
-        // every time we set info, we want to save it to disk (so the file on disk will ALWAYS be current, and so we can modify it as we choose)
-        if (hasChanged) {
-            save()
-        }
+        propertiesOnDisk.clear()
     }
 
-    fun save() {
-        var fos: FileOutputStream? = null
-        try {
-            fos = FileOutputStream(dbFile, false)
-
-            val properties = SortedProperties()
-
-            loadedProps.forEach { (key, value) ->
-                when (key) {
-                    "_salt" -> properties[key] = Sys.bytesToHex(value)
-                    "_private" -> properties[key] = Sys.bytesToHex(value)
-                    is InetAddress -> properties[IP.toString(key)] = Sys.bytesToHex(value)
-                    else -> logger.error("Unable to parse property [$key] $value")
-                }
-            }
-
-            properties.store(fos, "Server salt, public/private keys, and remote computer public Keys")
-            fos.flush()
-            properties.clear()
-            lastModifiedTime = dbFile.lastModified()
-        } catch (e: IOException) {
-            logger.error("Properties cannot save to: $dbFile", e)
-        } finally {
-            if (fos != null) {
-                try {
-                    fos.close()
-                } catch (ignored: IOException) {
-                }
-            }
-        }
-    }
-
+    /**
+     * Closes this storage (and if applicable, flushes its content to disk)
+     */
     override fun close() {
-        save()
+        super.close()
+
+        propertiesOnDisk.clear()
     }
 }
-
-

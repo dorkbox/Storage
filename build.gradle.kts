@@ -23,15 +23,14 @@ import java.time.Instant
 ///////////////////////////////
 
 gradle.startParameter.showStacktrace = ShowStacktrace.ALWAYS   // always show the stacktrace!
-gradle.startParameter.warningMode = WarningMode.All
 
 plugins {
-    java
+    id("com.dorkbox.GradleUtils") version "2.9"
+    id("com.dorkbox.Licensing") version "2.9.2"
+    id("com.dorkbox.VersionUpdate") version "2.4"
+    id("com.dorkbox.GradlePublish") version "1.11"
 
-    id("com.dorkbox.GradleUtils") version "1.12"
-    id("com.dorkbox.Licensing") version "2.5.2"
-    id("com.dorkbox.VersionUpdate") version "2.1"
-    id("com.dorkbox.GradlePublish") version "1.8"
+    kotlin("jvm") version "1.5.21"
 }
 
 object Extras {
@@ -50,13 +49,13 @@ object Extras {
     val buildDate = Instant.now().toString()
 }
 
-///////////////////////////////
-/////  assign 'Extras'
-///////////////////////////////
+/////////////////////////////
+///  assign 'Extras'
+/////////////////////////////
 GradleUtils.load("$projectDir/../../gradle.properties", Extras)
-GradleUtils.fixIntellijPaths()
-GradleUtils.defaultResolutionStrategy()
-GradleUtils.compileConfiguration(JavaVersion.VERSION_1_6)
+GradleUtils.defaults()
+GradleUtils.compileConfiguration(JavaVersion.VERSION_1_8)
+GradleUtils.jpms(JavaVersion.VERSION_1_9)
 
 
 licensing {
@@ -65,22 +64,6 @@ licensing {
         author(Extras.vendor)
         url(Extras.url)
     }
-}
-
-sourceSets {
-    main {
-        java {
-            setSrcDirs(listOf("src"))
-
-            // want to include java files for the source. 'setSrcDirs' resets includes...
-            include("**/*.java")
-        }
-    }
-}
-
-repositories {
-    mavenLocal() // this must be first!
-    jcenter()
 }
 
 tasks.jar.get().apply {
@@ -101,7 +84,36 @@ tasks.jar.get().apply {
 }
 
 dependencies {
-//    implementation("com.dorkbox:Utilities:1.5.1")
+//    // really fast storage
+//    // https://github.com/lmdbjava/lmdbjava
+//    compileOnly("org.lmdbjava:lmdbjava:0.8.1")
+//
+//    // https://github.com/OpenHFT/Chronicle-Map
+//    compileOnly("net.openhft:chronicle-map:3.20.40")
+
+
+    // https://github.com/MicroUtils/kotlin-logging
+    implementation("io.github.microutils:kotlin-logging:2.0.10")
+    implementation("org.slf4j:slf4j-api:1.8.0-beta4")
+
+
+    implementation("com.dorkbox:ByteUtilities:1.3")
+    implementation("com.dorkbox:Serializers:2.5")
+    implementation("com.dorkbox:ObjectPool:3.4")
+    implementation("com.dorkbox:Updates:1.1")
+
+    implementation("com.esotericsoftware:kryo:5.2.0")
+
+
+//    // really fast storage
+//    // https://github.com/lmdbjava/lmdbjava
+//    testImplementation("org.lmdbjava:lmdbjava:0.8.1")
+//
+//    // https://github.com/OpenHFT/Chronicle-Map
+//    testImplementation("net.openhft:chronicle-map:3.20.40")
+
+    testImplementation("junit:junit:4.13.1")
+    testImplementation("ch.qos.logback:logback-classic:1.3.0-alpha4")
 }
 
 publishToSonatype {

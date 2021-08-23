@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 dorkbox, llc
+ * Copyright 2021 dorkbox, llc
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,82 +13,188 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dorkbox.network.storage.types
+package dorkbox.storage.types
 
-import dorkbox.network.storage.GenericStore
-import dorkbox.network.storage.SettingsStore
-import dorkbox.network.storage.StorageType
+import com.esotericsoftware.kryo.io.ByteBufferInput
+import com.esotericsoftware.kryo.io.ByteBufferOutput
+import com.esotericsoftware.kryo.io.Input
+import com.esotericsoftware.kryo.io.Output
+import dorkbox.storage.Storage
 import mu.KLogger
-import net.openhft.chronicle.map.ChronicleMap
 import java.io.File
-import java.net.InetAddress
 
 /**
  * Chronicle Map is a super-fast, in-memory, non-blocking, key-value store
  *
  * https://github.com/OpenHFT/Chronicle-Map
  */
-class ChronicleMapStore(val dbFile: File, val logger: KLogger): GenericStore {
-    companion object {
-        fun type(dbFile: String) : StorageType {
-            return type(File(dbFile))
-        }
+class ChronicleMapStore(
+    val dbFile: File,
+    val readOnly: Boolean,
+    logger: KLogger
+) : Storage(logger) {
 
-        fun type(dbFile: File) = object : StorageType {
-            override fun create(logger: KLogger): SettingsStore {
-                return SettingsStore(logger, ChronicleMapStore(dbFile.absoluteFile, logger))
-            }
-        }
-    }
+//    private val map = ChronicleMap.of(String::class.java, ByteArray::class.java)
+//        .name("machine-keys")
+////        .objectSerializer(KryoObjectSerializer())
+//        .entries(1_000_000)
+//        .constantValueSizeBySample(ByteArray(32))
+//        .averageKeySize(16.0)
+//        .createPersistedTo(dbFile)
 
-    private val map = ChronicleMap.of(ByteArray::class.java, ByteArray::class.java)
-        .name("machine-keys")
-        .entries(1_000_000)
-        .constantValueSizeBySample(ByteArray(32))
-        .averageKeySize(16.0)
-        .createPersistedTo(dbFile)
 
-    // byte 0 is SALT
-    private val saltBuffer = ByteArray(1) {0}
+    private var output: Output =
+        ByteBufferOutput(64, 65535) // A reasonable max size of an object. We don't want to support it being TOO big
+    private var input: Input = ByteBufferInput(0)
 
-    // byte 1 is private key
-    private val privateKeyBuffer = ByteArray(1) {1}
+//    // byte 0 is SALT
+//    private val saltBuffer = ByteArray(1) {0}
+//
+//    // byte 1 is private key
+//    private val privateKeyBuffer = ByteArray(1) {1}
 
     init {
-        logger.info("ChronicleMap storage initialized at: '$dbFile'")
+        init("ChronicleMap storage initialized at: '$dbFile'")
     }
 
-    private fun getBytes(key: Any): ByteArray {
-        return when (key) {
-            is InetAddress -> key.address
-            SettingsStore.saltKey -> saltBuffer
-            SettingsStore.privateKey -> privateKeyBuffer
-            else -> throw IllegalArgumentException("Unable to manage property: $key")
+//    private fun getBytes(key: Any): ByteArray {
+//        return when (key) {
+//            is InetAddress -> key.address
+//            SettingsStore.saltKey -> saltBuffer
+//            SettingsStore.privateKey -> privateKeyBuffer
+//            else -> throw IllegalArgumentException("Unable to manage property: $key")
+//        }
+//    }
+//
+//    override fun get(key: Any): ByteArray? {
+//        return map[getBytes(key)]
+//    }
+//
+//    /**
+//     * Setting to NULL removes it
+//     */
+//    @Suppress("DuplicatedCode")
+//    override fun set(key: Any, bytes: ByteArray?) {
+//        val keyBytes = getBytes(key)
+//
+//        if (bytes == null) {
+//            map.remove(keyBytes)
+//        }
+//        else {
+//            map[keyBytes] = bytes
+//        }
+//    }
+
+    override fun setVersion(version: Long) {
+        if (!readOnly) {
+            // this is because `setVersion` is called internally, and we don't want to encounter errors during initialization
+            set(versionTag, version)
         }
     }
 
-    override fun get(key: Any): ByteArray? {
-        return map[getBytes(key)]
+    override fun file(): File? {
+        return dbFile
+    }
+
+    override fun size(): Int {
+        TODO("Not yet implemented")
+    }
+
+    override fun contains(key: Any): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override fun <V> get(key: Any): V? {
+//        input.reset()
+//        input.buffer = value
+//
+//        val valueObject = serializationManager.readFullClassAndObject(input)
+
+//        return map[key]
+        TODO("Not yet implemented")
+    }
+
+    override fun set(key: Any, data: Any?) {
+        TODO("Not yet implemented")
     }
 
     /**
-     * Setting to NULL removes it
+     * Deletes all contents of this storage, and if applicable, it's location on disk.
      */
-    @Suppress("DuplicatedCode")
-    override fun set(key: Any, bytes: ByteArray?) {
-        val keyBytes = getBytes(key)
+    override fun deleteAll() {
 
-        if (bytes == null) {
-            map.remove(keyBytes)
-        }
-        else {
-            map[keyBytes] = bytes
-        }
     }
 
     override fun close() {
-        map.close()
+//        map.close()
     }
 }
 
 
+////
+///**
+// * Chronicle Map is a super-fast, in-memory, non-blocking, key-value store
+// *
+// * https://github.com/OpenHFT/Chronicle-Map
+// */
+//class ChronicleMapStore(val dbFile: File, val logger: KLogger): GenericStore {
+//    companion object {
+//        fun type(dbFile: String) : StorageType {
+//            return type(File(dbFile))
+//        }
+//
+//        fun type(dbFile: File) = object : StorageType {
+//            override fun create(logger: KLogger): SettingsStore {
+//                return SettingsStore(logger, ChronicleMapStore(dbFile.absoluteFile, logger))
+//            }
+//        }
+//    }
+//    private val map = ChronicleMapBuilder.of(ByteArray::class.java, ByteArray::class.java)
+//        .name("machine-keys")
+//        .entries(1_000_000)
+//        .constantValueSizeBySample(ByteArray(32))
+//        .averageKeySize(16.0)
+//        .createPersistedTo(dbFile)
+//
+//    // byte 0 is SALT
+//    private val saltBuffer = ByteArray(1) {0}
+//
+//    // byte 1 is private key
+//    private val privateKeyBuffer = ByteArray(1) {1}
+//
+//    init {
+//        logger.info("ChronicleMap storage initialized at: '$dbFile'")
+//    }
+//
+//    private fun getBytes(key: Any): ByteArray {
+//        return when (key) {
+//            is InetAddress -> key.address
+//            SettingsStore.saltKey -> saltBuffer
+//            SettingsStore.privateKey -> privateKeyBuffer
+//            else -> throw IllegalArgumentException("Unable to manage property: $key")
+//        }
+//    }
+//
+//    override fun get(key: Any): ByteArray? {
+//        return map[getBytes(key)]
+//    }
+//
+//    /**
+//     * Setting to NULL removes it
+//     */
+//    @Suppress("DuplicatedCode")
+//    override fun set(key: Any, bytes: ByteArray?) {
+//        val keyBytes = getBytes(key)
+//
+//        if (bytes == null) {
+//            map.remove(keyBytes)
+//        }
+//        else {
+//            map[keyBytes] = bytes
+//        }
+//    }
+//
+//    override fun close() {
+//        map.close()
+//    }
+//}

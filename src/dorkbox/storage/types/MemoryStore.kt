@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 dorkbox, llc
+ * Copyright 2021 dorkbox, llc
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,39 +13,58 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dorkbox.network.storage.types
+package dorkbox.storage.types
 
-import dorkbox.network.storage.GenericStore
-import dorkbox.network.storage.SettingsStore
-import dorkbox.network.storage.StorageType
+import dorkbox.storage.Storage
 import mu.KLogger
-import org.agrona.collections.Object2ObjectHashMap
+import java.io.File
+import java.util.concurrent.ConcurrentHashMap
 
 /**
- * In-Memory store
+ * In-Memory storage
  */
-object MemoryStore {
-    fun type() = object : StorageType {
-        override fun create(logger: KLogger): SettingsStore {
-            return SettingsStore(logger, MemoryAccess(logger))
-        }
-    }
-}
-
-
-class MemoryAccess(val logger: KLogger): GenericStore {
-    private val map = Object2ObjectHashMap<Any, ByteArray>()
+class MemoryStore(logger: KLogger) : Storage(logger) {
+    private val map = ConcurrentHashMap<Any, Any>()
 
     init {
-        logger.info("Memory storage initialized")
+        init("Memory storage initialized")
     }
 
-    override fun get(key: Any): ByteArray? {
-        return map[key]
+    override fun setVersion(version: Long) {
+        // this is because `setVersion` is called internally, and we don't want to encounter errors during initialization
+        set(versionTag, version)
     }
 
-    override fun set(key: Any, bytes: ByteArray?) {
-        map[key] = bytes
+    override fun file(): File? {
+        return null
+    }
+
+    override fun size(): Int {
+        return map.size
+    }
+
+    override fun contains(key: Any): Boolean {
+        return map.contains(key)
+    }
+
+    override operator fun <V> get(key: Any): V? {
+        @Suppress("UNCHECKED_CAST")
+        return map[key] as V
+    }
+
+    override operator fun set(key: Any, data: Any?) {
+        if (data == null) {
+            map.remove(key)
+        } else {
+            map[key] = data
+        }
+    }
+
+    /**
+     * Deletes all contents of this storage
+     */
+    override fun deleteAll() {
+        map.clear()
     }
 
     override fun close() {
