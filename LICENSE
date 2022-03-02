@@ -1,34 +1,26 @@
  - Storage - Storage system for Java
    [The Apache Software License, Version 2.0]
    https://git.dorkbox.com/dorkbox/Storage
-   Copyright 2021
+   Copyright 2022
      Dorkbox LLC
 
    Extra license information
-     - Kotlin - 
-       [The Apache Software License, Version 2.0]
-       https://github.com/JetBrains/kotlin
-       Copyright 2020
-         JetBrains s.r.o. and Kotlin Programming Language contributors
-       Kotlin Compiler, Test Data+Libraries, and Tools repository contain third-party code, to which different licenses may apply
-       See: https://github.com/JetBrains/kotlin/blob/master/license/README.md
-
      - kotlin-logging - Lightweight logging framework for Kotlin
        [The Apache Software License, Version 2.0]
        https://github.com/MicroUtils/kotlin-logging
-       Copyright 2021
+       Copyright 2022
          Ohad Shai
 
      - SLF4J - Simple facade or abstraction for various logging frameworks
        [MIT License]
        http://www.slf4j.org
-       Copyright 2021
+       Copyright 2022
          QOS.ch
 
      - Kryo - Fast and efficient binary object graph serialization framework for Java
        [BSD 3-Clause License]
        https://github.com/EsotericSoftware/kryo
-       Copyright 2021
+       Copyright 2022
          Nathan Sweet
 
        Extra license information
@@ -46,6 +38,14 @@
            [BSD 3-Clause License]
            https://github.com/EsotericSoftware/minlog
              Nathan Sweet
+
+     - Kotlin - 
+       [The Apache Software License, Version 2.0]
+       https://github.com/JetBrains/kotlin
+       Copyright 2020
+         JetBrains s.r.o. and Kotlin Programming Language contributors
+       Kotlin Compiler, Test Data+Libraries, and Tools repository contain third-party code, to which different licenses may apply
+       See: https://github.com/JetBrains/kotlin/blob/master/license/README.md
 
      - ByteUtilties - Byte manipulation and Unsigned Number Utilities
        [The Apache Software License, Version 2.0]

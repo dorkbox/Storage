@@ -11,7 +11,7 @@ Maven Info
     <dependency>
       <groupId>com.dorkbox</groupId>
       <artifactId>Storage</artifactId>
-      <version>1.0</version>
+      <version>1.0.1</version>
     </dependency>
 </dependencies>
 ```

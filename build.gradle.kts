@@ -25,19 +25,19 @@ import java.time.Instant
 gradle.startParameter.showStacktrace = ShowStacktrace.ALWAYS   // always show the stacktrace!
 
 plugins {
-    id("com.dorkbox.GradleUtils") version "2.9"
-    id("com.dorkbox.Licensing") version "2.9.2"
+    id("com.dorkbox.GradleUtils") version "2.16"
+    id("com.dorkbox.Licensing") version "2.12"
     id("com.dorkbox.VersionUpdate") version "2.4"
-    id("com.dorkbox.GradlePublish") version "1.11"
+    id("com.dorkbox.GradlePublish") version "1.12"
 
-    kotlin("jvm") version "1.5.21"
+    kotlin("jvm") version "1.6.10"
 }
 
 object Extras {
     // set for the project
     const val description = "Storage system for Java"
     const val group = "com.dorkbox"
-    const val version = "1.0"
+    const val version = "1.0.1"
 
     // set as project.ext
     const val name = "Storage"
@@ -84,35 +84,37 @@ tasks.jar.get().apply {
 }
 
 dependencies {
-//    // really fast storage
-//    // https://github.com/lmdbjava/lmdbjava
-//    compileOnly("org.lmdbjava:lmdbjava:0.8.1")
-//
-//    // https://github.com/OpenHFT/Chronicle-Map
-//    compileOnly("net.openhft:chronicle-map:3.20.40")
+    // really fast storage
+    // https://github.com/lmdbjava/lmdbjava
+//    compileOnly("org.lmdbjava:lmdbjava:0.8.2")
+
+    // https://github.com/OpenHFT/Chronicle-Map
+//    compileOnly("net.openhft:chronicle-map:3.21.86")
 
 
     // https://github.com/MicroUtils/kotlin-logging
-    implementation("io.github.microutils:kotlin-logging:2.0.10")
-    implementation("org.slf4j:slf4j-api:1.8.0-beta4")
+    api("io.github.microutils:kotlin-logging:2.1.21")
+    api("org.slf4j:slf4j-api:1.8.0-beta4")
 
 
-    implementation("com.dorkbox:ByteUtilities:1.3")
-    implementation("com.dorkbox:Serializers:2.5")
-    implementation("com.dorkbox:ObjectPool:3.4")
-    implementation("com.dorkbox:Updates:1.1")
+    api("com.dorkbox:Updates:1.1")
 
-    implementation("com.esotericsoftware:kryo:5.2.0")
+    api("com.dorkbox:ByteUtilities:1.5")
+    api("com.dorkbox:Serializers:2.6")
+    api("com.dorkbox:ObjectPool:3.5")
 
 
-//    // really fast storage
-//    // https://github.com/lmdbjava/lmdbjava
-//    testImplementation("org.lmdbjava:lmdbjava:0.8.1")
-//
-//    // https://github.com/OpenHFT/Chronicle-Map
-//    testImplementation("net.openhft:chronicle-map:3.20.40")
+    api("com.esotericsoftware:kryo:5.3.0")
 
-    testImplementation("junit:junit:4.13.1")
+
+    // really fast storage
+    // https://github.com/lmdbjava/lmdbjava
+    testImplementation("org.lmdbjava:lmdbjava:0.8.2")
+
+    // https://github.com/OpenHFT/Chronicle-Map
+    testImplementation("net.openhft:chronicle-map:3.21.86")
+
+    testImplementation("junit:junit:4.13.2")
     testImplementation("ch.qos.logback:logback-classic:1.3.0-alpha4")
 }
 
