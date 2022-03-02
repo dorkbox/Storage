@@ -47,10 +47,25 @@
        Kotlin Compiler, Test Data+Libraries, and Tools repository contain third-party code, to which different licenses may apply
        See: https://github.com/JetBrains/kotlin/blob/master/license/README.md
 
+     - Updates - Software Update Management
+       [The Apache Software License, Version 2.0]
+       https://git.dorkbox.com/dorkbox/Updates
+       Copyright 2021
+         Dorkbox LLC
+
+       Extra license information
+         - Kotlin - 
+           [The Apache Software License, Version 2.0]
+           https://github.com/JetBrains/kotlin
+           Copyright 2020
+             JetBrains s.r.o. and Kotlin Programming Language contributors
+           Kotlin Compiler, Test Data+Libraries, and Tools repository contain third-party code, to which different licenses may apply
+           See: https://github.com/JetBrains/kotlin/blob/master/license/README.md
+
      - ByteUtilties - Byte manipulation and Unsigned Number Utilities
        [The Apache Software License, Version 2.0]
        https://git.dorkbox.com/dorkbox/ByteUtilities
-       Copyright 2021
+       Copyright 2022
          Dorkbox LLC
 
        Extra license information
@@ -96,14 +111,14 @@
          - Netty - An event-driven asynchronous network application framework
            [The Apache Software License, Version 2.0]
            https://netty.io
-           Copyright 2021
+           Copyright 2022
              The Netty Project
              Contributors. See source NOTICE
 
          - Kryo - Fast and efficient binary object graph serialization framework for Java
            [BSD 3-Clause License]
            https://github.com/EsotericSoftware/kryo
-           Copyright 2021
+           Copyright 2022
              Nathan Sweet
 
            Extra license information
@@ -140,7 +155,7 @@
      - Serializers - Kryo based serializers
        [The Apache Software License, Version 2.0]
        https://git.dorkbox.com/dorkbox/Serializers
-       Copyright 2021
+       Copyright 2022
          Dorkbox LLC
 
        Extra license information
@@ -159,16 +174,10 @@
            Kotlin Compiler, Test Data+Libraries, and Tools repository contain third-party code, to which different licenses may apply
            See: https://github.com/JetBrains/kotlin/blob/master/license/README.md
 
-         - Bouncy Castle Crypto - Lightweight cryptography API and JCE Extension
-           [The Apache Software License, Version 2.0]
-           http://www.bouncycastle.org
-           Copyright 2021
-             The Legion of the Bouncy Castle Inc
-
          - Kryo - Fast and efficient binary object graph serialization framework for Java
            [BSD 3-Clause License]
            https://github.com/EsotericSoftware/kryo
-           Copyright 2021
+           Copyright 2022
              Nathan Sweet
 
            Extra license information
@@ -186,6 +195,12 @@
                [BSD 3-Clause License]
                https://github.com/EsotericSoftware/minlog
                  Nathan Sweet
+
+         - Bouncy Castle Crypto - Lightweight cryptography API and JCE Extension
+           [The Apache Software License, Version 2.0]
+           http://www.bouncycastle.org
+           Copyright 2022
+             The Legion of the Bouncy Castle Inc
 
          - Updates - Software Update Management
            [The Apache Software License, Version 2.0]
@@ -205,10 +220,22 @@
      - ObjectPool - Fast, lightweight, and compatible blocking/non-blocking/soft-reference object pool for Java 8+
        [The Apache Software License, Version 2.0]
        https://git.dorkbox.com/dorkbox/ObjectPool
-       Copyright 2021
+       Copyright 2022
          Dorkbox LLC
 
        Extra license information
+         - kotlinx.coroutines - Library support for Kotlin coroutines with multiplatform support
+           [The Apache Software License, Version 2.0]
+           https://github.com/Kotlin/kotlinx.coroutines
+           Copyright 2022
+             JetBrains s.r.o.
+
+         - Conversant Disruptor - Disruptor is the highest performing intra-thread transfer mechanism available in Java.
+           [The Apache Software License, Version 2.0]
+           https://github.com/conversant/disruptor
+           Copyright 2022
+             Conversant, Inc
+
          - Kotlin - 
            [The Apache Software License, Version 2.0]
            https://github.com/JetBrains/kotlin
@@ -216,18 +243,6 @@
              JetBrains s.r.o. and Kotlin Programming Language contributors
            Kotlin Compiler, Test Data+Libraries, and Tools repository contain third-party code, to which different licenses may apply
            See: https://github.com/JetBrains/kotlin/blob/master/license/README.md
-
-         - kotlinx.coroutines - Library support for Kotlin coroutines with multiplatform support
-           [The Apache Software License, Version 2.0]
-           https://github.com/Kotlin/kotlinx.coroutines
-           Copyright 2021
-             JetBrains s.r.o.
-
-         - Conversant Disruptor - Disruptor is the highest performing intra-thread transfer mechanism available in Java.
-           [The Apache Software License, Version 2.0]
-           https://github.com/conversant/disruptor
-           Copyright 2021
-             Conversant, Inc
 
          - Updates - Software Update Management
            [The Apache Software License, Version 2.0]
@@ -243,18 +258,3 @@
                  JetBrains s.r.o. and Kotlin Programming Language contributors
                Kotlin Compiler, Test Data+Libraries, and Tools repository contain third-party code, to which different licenses may apply
                See: https://github.com/JetBrains/kotlin/blob/master/license/README.md
-
-     - Updates - Software Update Management
-       [The Apache Software License, Version 2.0]
-       https://git.dorkbox.com/dorkbox/Updates
-       Copyright 2021
-         Dorkbox LLC
-
-       Extra license information
-         - Kotlin - 
-           [The Apache Software License, Version 2.0]
-           https://github.com/JetBrains/kotlin
-           Copyright 2020
-             JetBrains s.r.o. and Kotlin Programming Language contributors
-           Kotlin Compiler, Test Data+Libraries, and Tools repository contain third-party code, to which different licenses may apply
-           See: https://github.com/JetBrains/kotlin/blob/master/license/README.md
