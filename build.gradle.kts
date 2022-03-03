@@ -102,9 +102,11 @@ dependencies {
     api("com.dorkbox:ByteUtilities:1.5")
     api("com.dorkbox:Serializers:2.6")
     api("com.dorkbox:ObjectPool:3.5")
+    api("com.dorkbox:MinLog:2.4")
 
-
-    api("com.esotericsoftware:kryo:5.3.0")
+    api("com.esotericsoftware:kryo:5.3.0") {
+        exclude("com.esotericsoftware", "minlog") // we use our own minlog, that logs to SLF4j instead
+    }
 
 
     // really fast storage
