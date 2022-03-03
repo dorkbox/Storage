@@ -116,7 +116,7 @@ dependencies {
 
     testImplementation("junit:junit:4.13.2")
     testImplementation("ch.qos.logback:logback-classic:1.3.0-alpha4")
-    testImplementation("org.agrona:agrona:0.14.0")
+    testImplementation("org.agrona:agrona:1.14.0")
 
 }
 
