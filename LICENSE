@@ -1,26 +1,26 @@
  - Storage - Storage system for Java
    [The Apache Software License, Version 2.0]
    https://git.dorkbox.com/dorkbox/Storage
-   Copyright 2022
+   Copyright 2023
      Dorkbox LLC
 
    Extra license information
      - kotlin-logging - Lightweight logging framework for Kotlin
        [The Apache Software License, Version 2.0]
        https://github.com/MicroUtils/kotlin-logging
-       Copyright 2022
+       Copyright 2023
          Ohad Shai
 
      - SLF4J - Simple facade or abstraction for various logging frameworks
        [MIT License]
-       http://www.slf4j.org
-       Copyright 2022
+       https://www.slf4j.org
+       Copyright 2023
          QOS.ch
 
      - Kryo - Fast and efficient binary object graph serialization framework for Java
        [BSD 3-Clause License]
        https://github.com/EsotericSoftware/kryo
-       Copyright 2022
+       Copyright 2023
          Nathan Sweet
 
        Extra license information
@@ -29,9 +29,9 @@
            https://github.com/EsotericSoftware/reflectasm
              Nathan Sweet
 
-         - Objenesis  - 
+         - Objenesis - 
            [The Apache Software License, Version 2.0]
-           http://objenesis.org
+           https://github.com/easymock/objenesis
              Objenesis Team and all contributors
 
          - MinLog-SLF4J - 
@@ -65,20 +65,10 @@
      - ByteUtilties - Byte manipulation and Unsigned Number Utilities
        [The Apache Software License, Version 2.0]
        https://git.dorkbox.com/dorkbox/ByteUtilities
-       Copyright 2022
+       Copyright 2023
          Dorkbox LLC
 
        Extra license information
-         - Byte Utils (UByte, UInteger, ULong, Unsigned, UNumber, UShort) - 
-           [The Apache Software License, Version 2.0]
-           https://github.com/jOOQ/jOOQ/tree/master/jOOQ/src/main/java/org/jooq/types
-           Copyright 2017
-             Data Geekery GmbH (http://www.datageekery.com)
-             Lukas Eder
-             Ed Schaller
-             Jens Nerche
-             Ivan Sokolov
-
          - Kryo Serialization - 
            [BSD 3-Clause License]
            https://github.com/EsotericSoftware/kryo
@@ -111,14 +101,14 @@
          - Netty - An event-driven asynchronous network application framework
            [The Apache Software License, Version 2.0]
            https://netty.io
-           Copyright 2022
+           Copyright 2023
              The Netty Project
              Contributors. See source NOTICE
 
          - Kryo - Fast and efficient binary object graph serialization framework for Java
            [BSD 3-Clause License]
            https://github.com/EsotericSoftware/kryo
-           Copyright 2022
+           Copyright 2023
              Nathan Sweet
 
            Extra license information
@@ -127,7 +117,7 @@
                https://github.com/EsotericSoftware/reflectasm
                  Nathan Sweet
 
-             - Objenesis  - 
+             - Objenesis - 
                [The Apache Software License, Version 2.0]
                http://objenesis.org
                  Objenesis Team and all contributors
@@ -155,7 +145,7 @@
      - Serializers - Kryo based serializers
        [The Apache Software License, Version 2.0]
        https://git.dorkbox.com/dorkbox/Serializers
-       Copyright 2022
+       Copyright 2023
          Dorkbox LLC
 
        Extra license information
@@ -177,7 +167,7 @@
          - Kryo - Fast and efficient binary object graph serialization framework for Java
            [BSD 3-Clause License]
            https://github.com/EsotericSoftware/kryo
-           Copyright 2022
+           Copyright 2023
              Nathan Sweet
 
            Extra license information
@@ -186,7 +176,7 @@
                https://github.com/EsotericSoftware/reflectasm
                  Nathan Sweet
 
-             - Objenesis  - 
+             - Objenesis - 
                [The Apache Software License, Version 2.0]
                http://objenesis.org
                  Objenesis Team and all contributors
@@ -199,7 +189,7 @@
          - Bouncy Castle Crypto - Lightweight cryptography API and JCE Extension
            [The Apache Software License, Version 2.0]
            http://www.bouncycastle.org
-           Copyright 2022
+           Copyright 2023
              The Legion of the Bouncy Castle Inc
 
          - Updates - Software Update Management
@@ -220,20 +210,20 @@
      - ObjectPool - Fast, lightweight, and compatible blocking/non-blocking/soft-reference object pool for Java 8+
        [The Apache Software License, Version 2.0]
        https://git.dorkbox.com/dorkbox/ObjectPool
-       Copyright 2022
+       Copyright 2023
          Dorkbox LLC
 
        Extra license information
          - kotlinx.coroutines - Library support for Kotlin coroutines with multiplatform support
            [The Apache Software License, Version 2.0]
            https://github.com/Kotlin/kotlinx.coroutines
-           Copyright 2022
+           Copyright 2023
              JetBrains s.r.o.
 
          - Conversant Disruptor - Disruptor is the highest performing intra-thread transfer mechanism available in Java.
            [The Apache Software License, Version 2.0]
            https://github.com/conversant/disruptor
-           Copyright 2022
+           Copyright 2023
              Conversant, Inc
 
          - Kotlin - 
@@ -263,7 +253,7 @@
        [BSD 3-Clause License]
        https://git.dorkbox.com/dorkbox/MinLog-SLF4J
        https://github.com/EsotericSoftware/minlog
-       Copyright 2022
+       Copyright 2023
          Dorkbox LLC
          Nathan Sweet
          Dan Brown
@@ -272,7 +262,7 @@
          - SLF4J - Simple facade or abstraction for various logging frameworks
            [MIT License]
            http://www.slf4j.org
-           Copyright 2022
+           Copyright 2023
              QOS.ch
 
          - Updates - Software Update Management

@@ -2,11 +2,10 @@ module dorkbox.storage {
     exports dorkbox.storage;
     exports dorkbox.storage.types;
 
-    requires dorkbox.updates;
-    requires org.slf4j;
-    requires kotlin.logging.jvm;
+    requires transitive dorkbox.updates;
 
-    requires kotlin.stdlib;
+    requires transitive org.slf4j;
+    requires transitive io.github.microutils.kotlinlogging;
 
-    requires java.base;
+    requires transitive kotlin.stdlib;
 }

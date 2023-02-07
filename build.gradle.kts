@@ -25,12 +25,12 @@ import java.time.Instant
 gradle.startParameter.showStacktrace = ShowStacktrace.ALWAYS   // always show the stacktrace!
 
 plugins {
-    id("com.dorkbox.GradleUtils") version "2.16"
-    id("com.dorkbox.Licensing") version "2.12"
-    id("com.dorkbox.VersionUpdate") version "2.4"
-    id("com.dorkbox.GradlePublish") version "1.12"
+    id("com.dorkbox.GradleUtils") version "3.11"
+    id("com.dorkbox.Licensing") version "2.21"
+    id("com.dorkbox.VersionUpdate") version "2.6"
+    id("com.dorkbox.GradlePublish") version "1.17"
 
-    kotlin("jvm") version "1.6.10"
+    kotlin("jvm") version "1.8.0"
 }
 
 object Extras {
@@ -93,18 +93,18 @@ dependencies {
 
 
     // https://github.com/MicroUtils/kotlin-logging
-    api("io.github.microutils:kotlin-logging:2.1.21")
-    api("org.slf4j:slf4j-api:1.8.0-beta4")
+    api("io.github.microutils:kotlin-logging:3.0.5")
+    api("org.slf4j:slf4j-api:2.0.6")
 
 
     api("com.dorkbox:Updates:1.1")
 
-    api("com.dorkbox:ByteUtilities:1.5")
-    api("com.dorkbox:Serializers:2.6")
-    api("com.dorkbox:ObjectPool:3.5")
-    api("com.dorkbox:MinLog:2.4")
+    api("com.dorkbox:ByteUtilities:1.8")
+    api("com.dorkbox:Serializers:2.8")
+    api("com.dorkbox:ObjectPool:4.2")
+    api("com.dorkbox:MinLog:2.5")
 
-    api("com.esotericsoftware:kryo:5.3.0") {
+    api("com.esotericsoftware:kryo:5.4.0") {
         exclude("com.esotericsoftware", "minlog") // we use our own minlog, that logs to SLF4j instead
     }
 
