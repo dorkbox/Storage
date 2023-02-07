@@ -108,7 +108,6 @@ dependencies {
         exclude("com.esotericsoftware", "minlog") // we use our own minlog, that logs to SLF4j instead
     }
 
-
     // really fast storage
     // https://github.com/lmdbjava/lmdbjava
     testImplementation("org.lmdbjava:lmdbjava:0.8.2")
@@ -117,7 +116,7 @@ dependencies {
     testImplementation("net.openhft:chronicle-map:3.21.86")
 
     testImplementation("junit:junit:4.13.2")
-    testImplementation("ch.qos.logback:logback-classic:1.3.0-alpha4")
+    testImplementation("ch.qos.logback:logback-classic:1.4.5")
     testImplementation("org.agrona:agrona:1.14.0")
 
 }
