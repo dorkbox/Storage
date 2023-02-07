@@ -31,7 +31,7 @@ abstract class Storage(val logger: KLogger) : AutoCloseable {
         /**
          * Gets the version number.
          */
-        const val version = "1.1"
+        const val version = "1.2"
 
         init {
             // Add this project to the updates system, which verifies this class + UUID + version information
@@ -309,7 +309,7 @@ abstract class Storage(val logger: KLogger) : AutoCloseable {
     /**
      * Java property file storage system
      */
-    class Property : Storage.FileBuilder<Property>() {
+    class Property : FileBuilder<Property>() {
         private var autoLoad = false
 
         override val isStringBased = true

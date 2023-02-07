@@ -11,7 +11,7 @@ Maven Info
     <dependency>
       <groupId>com.dorkbox</groupId>
       <artifactId>Storage</artifactId>
-      <version>1.1</version>
+      <version>1.2</version>
     </dependency>
 </dependencies>
 ```
@@ -21,7 +21,7 @@ Gradle Info
 ````
 dependencies {
     ...
-    compile "com.dorkbox:Storage:1.0"
+    compile "com.dorkbox:Storage:1.2"
 }
 ````
 
@@ -30,4 +30,3 @@ License
 ---------
 This project is © 2021 dorkbox llc, and is distributed under the terms of the Apache v2.0 License. See file "LICENSE" for further 
 references.
-
