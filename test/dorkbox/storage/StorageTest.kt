@@ -18,6 +18,7 @@ package dorkbox.storage
 import com.esotericsoftware.kryo.Kryo
 import com.esotericsoftware.kryo.io.Input
 import com.esotericsoftware.kryo.io.Output
+import dorkbox.storage.serializer.SerializerBytes
 import org.junit.Assert
 import org.junit.FixMethodOrder
 import org.junit.Rule
@@ -68,18 +69,48 @@ class StorageTest {
     }
 
     @Test
+    fun memoryEqualityAndHash() {
+        val tester = Tester("key1", "value1")
+
+        val s1 = Storage.Memory()
+        val s2 = Storage.Memory()
+
+        Assert.assertTrue(s1 == s2)
+        Assert.assertTrue(s1.hashCode() == s2.hashCode())
+
+        val s1Build = s1.build()
+        val s2Build = s2.build()
+
+        Assert.assertTrue(s1Build == s2Build)
+        Assert.assertTrue(s1Build.hashCode() == s2Build.hashCode())
+
+        // note: we want to auto-close the storage after we write/read it
+        s1Build.use {
+            it["key1"] = tester
+        }
+
+        Assert.assertFalse(s1Build == s2Build)
+        Assert.assertFalse(s1Build.hashCode() == s2Build.hashCode())
+    }
+
+    @Test
     fun property() {
         val tmp = tmp().newFile()
 
         val tester = Tester("key1", "value1")
 
+        // lambda's do NOT evaluate equality. Only reference equality.
+        val serializer = SerializerBytes {
+            register(Tester::class.java, TesterSerializer())
+        }
+
         // note: we want to auto-close the storage after we write/read it
-        val storage = Storage.Property().file(tmp).onNewSerializer { register(Tester::class.java, TesterSerializer()) }.build()
+        val storage = Storage.Property().file(tmp).serializer(serializer).build()
         storage.use {
             it["key1"] = tester
         }
 
-        val storage2 = Storage.Property().file(tmp).onNewSerializer { register(Tester::class.java, TesterSerializer()) }.build()
+        val storage2 = Storage.Property().file(tmp).serializer(serializer).build()
 
         val tes: Tester? = storage2.use {
             it["key1"]
@@ -95,13 +126,18 @@ class StorageTest {
 
         val tester = Tester("key1", "value1")
 
+        // lambda's do NOT evaluate equality. Only reference equality.
+        val serializer = SerializerBytes {
+            register(Tester::class.java, TesterSerializer())
+        }
+
         // note: we want to auto-close the storage after we write/read it
-        val storage1 = Storage.Property().file(tmp1).onNewSerializer { register(Tester::class.java, TesterSerializer()) }.build()
+        val storage1 = Storage.Property().file(tmp1).serializer(serializer).build()
         storage1.use {
             it["key1"] = tester
         }
 
-        val storage2 = Storage.Property().file(tmp2).onNewSerializer { register(Tester::class.java, TesterSerializer()) }.build()
+        val storage2 = Storage.Property().file(tmp2).serializer(serializer).build()
         storage2.use {
             it["key1"] = tester
         }
@@ -111,7 +147,7 @@ class StorageTest {
         val lines1 = tmp1.readLines().filter { !it.startsWith("#") || it.startsWith("#Storage") }
         val lines2 = tmp1.readLines().filter { !it.startsWith("#") || it.startsWith("#Storage") }
 
-        Assert.assertTrue( lines1 == lines2)
+        Assert.assertTrue(lines1 == lines2)
     }
 
     @Test
@@ -138,6 +174,55 @@ class StorageTest {
             Assert.fail("no exception thrown!")
         } catch (e: Exception) {
         }
+    }
+
+    @Test
+    fun propertyEqualityAndHash() {
+        val tmp1 = tmp().newFile()
+        val tmp2 = tmp().newFile()
+
+        val tester = Tester("key1", "value1")
+
+        // lambda's do NOT evaluate equality. Only reference equality.
+        val serializer = SerializerBytes {
+            register(Tester::class.java, TesterSerializer())
+        }
+
+        val s1 = Storage.Property().file(tmp1).serializer(serializer)
+        val s2 = Storage.Property().file(tmp1).serializer(serializer)
+        val s3 = Storage.Property().file(tmp2).serializer(serializer)
+        val s4 = Storage.Property().file(tmp2).serializer(SerializerBytes {
+            register(Tester::class.java, TesterSerializer())
+        })
+
+        Assert.assertTrue(s1 == s2)
+        Assert.assertFalse(s1 == s3)
+        Assert.assertFalse(s3 == s4)
+
+        Assert.assertTrue(s1.hashCode() == s2.hashCode())
+        Assert.assertFalse(s1.hashCode() == s3.hashCode())
+        Assert.assertFalse(s3.hashCode() == s4.hashCode())
+
+        val s1Build = s1.build()
+        val s2Build = s2.build()
+        val s3Build = s3.build()
+        val s4Build = s4.build()
+
+        Assert.assertTrue(s1Build == s2Build)
+        Assert.assertFalse(s1Build == s3Build)
+        Assert.assertFalse(s3Build == s4Build)
+
+        Assert.assertTrue(s1Build.hashCode() == s2Build.hashCode())
+        Assert.assertFalse(s1Build.hashCode() == s3Build.hashCode())
+        Assert.assertFalse(s3Build.hashCode() == s4Build.hashCode())
+
+        // note: we want to auto-close the storage after we write/read it
+        s1Build.use {
+            it["key1"] = tester
+        }
+
+        Assert.assertFalse(s1Build == s2Build)
+        Assert.assertFalse(s1Build.hashCode() == s2Build.hashCode())
     }
 
 //    @Test
