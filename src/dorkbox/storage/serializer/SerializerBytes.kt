@@ -47,34 +47,30 @@ class SerializerBytes(onNewKryoSerializer: Kryo.() -> Unit) {
 
 
     @Throws(Exception::class)
-    fun serialize(`object`: Any): ByteArray? {
+    fun serialize(`object`: Any?): ByteArray {
         val kryo = kryoPool.take()
-        try {
-            return kryo.write(`object`).toBytes()
+        return try {
+            kryo.write(`object`).toBytes()
         } catch (e: Exception) {
             LOGGER.error("Error while serializing the object.", e)
-            e.printStackTrace()
+            throw e
         } finally {
             kryoPool.put(kryo)
         }
-
-        return null
     }
 
     @Suppress("UNUSED_PARAMETER")
     @Throws(Exception::class)
-    fun serialize(`object`: Any, type: Class<*>): ByteArray? {
+    fun serialize(`object`: Any?, type: Class<*>): ByteArray {
         val kryo = kryoPool.take()
-        try {
-            return kryo.writeObject(`object`).toBytes()
+        return try {
+            kryo.writeObject(`object`).toBytes()
         } catch (e: Exception) {
             LOGGER.error("Error while serializing the object.", e)
-            e.printStackTrace()
+            throw e
         } finally {
             kryoPool.put(kryo)
         }
-
-        return null
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -87,7 +83,7 @@ class SerializerBytes(onNewKryoSerializer: Kryo.() -> Unit) {
             }
         } catch (e: Exception) {
             LOGGER.error("Error while deserializing the bytes.", e)
-            throw Exception("Error while serializing the object.", e)
+            throw e
         } finally {
             kryoPool.put(kryo)
         }
