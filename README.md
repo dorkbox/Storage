@@ -11,19 +11,19 @@ Maven Info
     <dependency>
       <groupId>com.dorkbox</groupId>
       <artifactId>Storage</artifactId>
-      <version>1.2</version>
+      <version>1.3</version>
     </dependency>
 </dependencies>
 ```
 
 Gradle Info
 ---------
-````
+```
 dependencies {
     ...
-    compile "com.dorkbox:Storage:1.2"
+    compile "com.dorkbox:Storage:1.3"
 }
-````
+```
 
 
 License
