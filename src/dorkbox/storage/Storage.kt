@@ -15,7 +15,9 @@
  */
 package dorkbox.storage
 
-import com.esotericsoftware.kryo.Kryo
+import dorkbox.bytes.decodeBase58
+import dorkbox.bytes.encodeToBase58String
+import dorkbox.storage.serializer.SerializerBytes
 import dorkbox.storage.types.MemoryStore
 import dorkbox.storage.types.PropertyStore
 import mu.KLogger
@@ -24,7 +26,7 @@ import org.slf4j.helpers.NOPLogger
 import java.io.File
 
 
-typealias AccessFunc = ((key: Any, value: Any, load: (key: Any, value: Any) -> Unit) -> Unit)
+typealias AccessFunc = ((serializer: SerializerBytes, key: Any, value: Any?, load: (key: Any, value: Any?) -> Unit) -> Unit)
 
 abstract class Storage(val logger: KLogger) : AutoCloseable {
     companion object {
@@ -39,6 +41,8 @@ abstract class Storage(val logger: KLogger) : AutoCloseable {
         }
 
         const val versionTag = "__VERSION__"
+
+        private val defaultLogger: KLogger = KotlinLogging.logger(NOPLogger.NOP_LOGGER)
     }
 
     fun init(initMessage: String) {
@@ -152,9 +156,9 @@ abstract class Storage(val logger: KLogger) : AutoCloseable {
         fun onSave(onSave: AccessFunc): Builder
 
         /**
-         * Specify how to configure the kryo instance for serialization. This instance of kryo will be used to serialize the key/value data, which is subsequently saved to disk
+         * Specify how to configure the kryo instance for serialization. This instance of kryo will be used to serialize the key/value data, which is subsequently saved
          */
-        fun onNewSerializer(onNewKryo: Kryo.() -> Unit): Builder
+        fun serializer(serializer: SerializerBytes): Builder
 
         /**
          * Assigns a logger to use for the storage system. The default is a No Operation (NOP) logger which will ignore everything.
@@ -165,14 +169,19 @@ abstract class Storage(val logger: KLogger) : AutoCloseable {
 
      @Suppress("UNCHECKED_CAST")
      abstract class FileBuilder<B : Builder>: Builder {
-         var onLoad: AccessFunc? = null
-         var onSave: AccessFunc? = null
-         var onNewKryo: Kryo.() -> Unit = { }
+         companion object {
+             private val defaultSerializer = SerializerBytes {}
+         }
+         abstract var onLoad: AccessFunc
+         abstract var onSave: AccessFunc
+
+         var serializer: SerializerBytes = defaultSerializer
 
          var shared = false
-         @Volatile var sharedBuild: Storage? = null
+         @Volatile
+         var sharedBuild: Storage? = null
 
-         var logger: KLogger = KotlinLogging.logger(NOPLogger.NOP_LOGGER)
+         var logger: KLogger = defaultLogger
 
          var file = File("storage.db")
          var readOnly = false
@@ -207,8 +216,8 @@ abstract class Storage(val logger: KLogger) : AutoCloseable {
              return this
          }
 
-         override fun onNewSerializer(onNewKryo: Kryo.() -> Unit): Builder {
-             this.onNewKryo = onNewKryo
+         override fun serializer(serializer: SerializerBytes): Builder {
+             this.serializer = serializer
              return this
          }
 
@@ -249,6 +258,38 @@ abstract class Storage(val logger: KLogger) : AutoCloseable {
              readOnlyViolent = true
              return this as B
          }
+
+         override fun equals(other: Any?): Boolean {
+             if (this === other) return true
+             if (other !is FileBuilder<*>) return false
+
+             if (onLoad != other.onLoad) return false //lambda
+             if (onSave != other.onSave) return false //lambda
+             if (serializer != other.serializer) return false //lambda
+             if (shared != other.shared) return false
+             if (sharedBuild != other.sharedBuild) return false
+             if (logger != other.logger) return false
+             if (file != other.file) return false
+             if (readOnly != other.readOnly) return false
+             if (readOnlyViolent != other.readOnlyViolent) return false
+             if (isStringBased != other.isStringBased) return false
+
+             return true
+         }
+
+         override fun hashCode(): Int {
+             var result = onLoad?.hashCode() ?: 0  //lambda
+             result = 31 * result + (onSave?.hashCode() ?: 0)  //lambda
+             result = 31 * result + serializer.hashCode()  //lambda
+             result = 31 * result + shared.hashCode()
+             result = 31 * result + (sharedBuild?.hashCode() ?: 0)
+             result = 31 * result + logger.hashCode()
+             result = 31 * result + file.hashCode()
+             result = 31 * result + readOnly.hashCode()
+             result = 31 * result + readOnlyViolent.hashCode()
+             result = 31 * result + isStringBased.hashCode()
+             return result
+         }
      }
 
 
@@ -260,7 +301,7 @@ abstract class Storage(val logger: KLogger) : AutoCloseable {
      * This storage system DOES NOT care about serializing data, so `register` has no effect.
      */
     class Memory : Builder {
-        private var logger: KLogger = KotlinLogging.logger(NOPLogger.NOP_LOGGER)
+        private var logger: KLogger = defaultLogger
 
         private var shared = false
         @Volatile private var sharedBuild: Storage? = null
@@ -292,7 +333,7 @@ abstract class Storage(val logger: KLogger) : AutoCloseable {
             return this
         }
 
-        override fun onNewSerializer(onNewKryo: Kryo.() -> Unit): Builder {
+        override fun serializer(serializer: SerializerBytes): Builder {
             return this
         }
 
@@ -304,13 +345,54 @@ abstract class Storage(val logger: KLogger) : AutoCloseable {
             this.logger = logger
             return this
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (other !is Memory) return false
+
+            if (logger != other.logger) return false
+            if (shared != other.shared) return false
+            if (sharedBuild != other.sharedBuild) return false
+            if (isStringBased != other.isStringBased) return false
+
+            return true
+        }
+
+        override fun hashCode(): Int {
+            var result = logger.hashCode()
+            result = 31 * result + shared.hashCode()
+            result = 31 * result + (sharedBuild?.hashCode() ?: 0)
+            result = 31 * result + isStringBased.hashCode()
+            return result
+        }
     }
 
     /**
      * Java property file storage system
      */
     class Property : FileBuilder<Property>() {
+        companion object {
+            // property files MUST load via strings.
+            val defaultOnLoad: AccessFunc = { serializer, key, value, load ->
+                val keyBytes = (key as String).decodeBase58()
+                val valueBytes = (value as String).decodeBase58()
+
+                val xKey = serializer.deserialize<Any>(keyBytes)!!
+                val xValue = serializer.deserialize<Any>(valueBytes)
+                load(xKey, xValue)
+            }
+
+            val defaultOnSave: AccessFunc = { serializer, key, value, save ->
+                val xKey = serializer.serialize(key).encodeToBase58String()
+                val xValue = serializer.serialize(value).encodeToBase58String()
+                save(xKey, xValue)
+            }
+        }
+
         private var autoLoad = false
+
+        override var onLoad: AccessFunc = defaultOnLoad
+        override var onSave: AccessFunc = defaultOnSave
 
         override val isStringBased = true
 
@@ -319,8 +401,16 @@ abstract class Storage(val logger: KLogger) : AutoCloseable {
          */
         override fun build(): Storage {
             return manageShared {
-                PropertyStore(file.absoluteFile, autoLoad, readOnly, readOnlyViolent, logger, onNewKryo,
-                    onLoad, onSave)
+                PropertyStore(
+                    dbFile = file.absoluteFile,
+                    autoLoad = autoLoad,
+                    readOnly = readOnly,
+                    readOnlyViolent = readOnlyViolent,
+                    logger = logger,
+                    serializer = serializer,
+                    onLoad = onLoad,
+                    onSave = onSave
+                )
             }
         }
 
@@ -330,6 +420,24 @@ abstract class Storage(val logger: KLogger) : AutoCloseable {
         fun autoLoadChanges(): Property {
             autoLoad = true
             return this
+        }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (other !is Property) return false
+            if (!super.equals(other)) return false
+
+            if (autoLoad != other.autoLoad) return false
+            if (isStringBased != other.isStringBased) return false
+
+            return true
+        }
+
+        override fun hashCode(): Int {
+            var result = super.hashCode()
+            result = 31 * result + autoLoad.hashCode()
+            result = 31 * result + isStringBased.hashCode()
+            return result
         }
     }
 

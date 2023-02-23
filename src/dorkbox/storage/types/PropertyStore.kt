@@ -15,8 +15,8 @@
  */
 package dorkbox.storage.types
 
-import com.esotericsoftware.kryo.Kryo
 import dorkbox.storage.AccessFunc
+import dorkbox.storage.serializer.SerializerBytes
 import mu.KLogger
 import java.io.File
 import java.io.FileInputStream
@@ -32,10 +32,19 @@ class PropertyStore(
     readOnly: Boolean,
     readOnlyViolent: Boolean,
     logger: KLogger,
-    onNewKryo: Kryo.() -> Unit,
-    onLoad: AccessFunc?,
-    onSave: AccessFunc?,
-) : StringStore(dbFile, autoLoad, readOnly, readOnlyViolent, logger, onNewKryo, onLoad, onSave) {
+    serializer: SerializerBytes,
+    onLoad: AccessFunc,
+    onSave: AccessFunc,
+) : StringStore(
+    dbFile = dbFile,
+    autoLoad = autoLoad,
+    readOnly = readOnly,
+    readOnlyViolent = readOnlyViolent,
+    logger = logger,
+    serializer = serializer,
+    onLoad = onLoad,
+    onSave = onSave
+) {
 
     private val propertiesOnDisk = object : Properties() {
         override fun keys(): Enumeration<Any> {
@@ -71,7 +80,7 @@ class PropertyStore(
                 } else {
                     try {
                         propertiesOnDisk[k] = v
-                        onLoadFunc(k, v, loadFunc)
+                        onLoad(serializer, k, v, loadFunc)
                     } catch (e: Exception) {
                         logger.error("Unable to parse property ($dbFile) [$k] : $v", e)
                     }

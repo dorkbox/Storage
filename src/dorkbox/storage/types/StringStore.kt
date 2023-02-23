@@ -15,9 +15,6 @@
  */
 package dorkbox.storage.types
 
-import com.esotericsoftware.kryo.Kryo
-import dorkbox.bytes.decodeBase58
-import dorkbox.bytes.encodeToBase58String
 import dorkbox.storage.AccessFunc
 import dorkbox.storage.Storage
 import dorkbox.storage.serializer.SerializerBytes
@@ -35,9 +32,9 @@ abstract class StringStore(
     val readOnly: Boolean,
     val readOnlyViolent: Boolean,
     logger: KLogger,
-    onNewKryo: Kryo.() -> Unit,
-    onLoad: AccessFunc?,
-    onSave: AccessFunc?,
+    val serializer: SerializerBytes,
+    val onLoad: AccessFunc,
+    val onSave: AccessFunc,
 ) : Storage(logger) {
 
     companion object {
@@ -52,13 +49,10 @@ abstract class StringStore(
     @Volatile
     private var isDirty = false
 
-    protected val onLoadFunc: AccessFunc
-    private val onSaveFunc: AccessFunc
-    protected val loadFunc: (key: Any, value: Any) -> Unit
+    protected val loadFunc: (key: Any, value: Any?) -> Unit
     protected val saveFunc: (key: Any, value: Any?) -> Unit
 
-    private val loadedProps = ConcurrentHashMap<Any, Any>()
-    private val serializer = SerializerBytes(onNewKryo)
+    private val loadedProps = ConcurrentHashMap<Any, Any?>()
 
     init {
         loadFunc = { key, value ->
@@ -66,29 +60,6 @@ abstract class StringStore(
         }
         saveFunc = { key, value ->
             onSave(key, value)
-        }
-
-        onLoadFunc = if (onLoad != null) {
-            onLoad
-        } else {
-            { key, value, load ->
-                val keyBytes = (key as String).decodeBase58()
-                val valueBytes = (value as String).decodeBase58()
-
-                val xKey = serializer.deserialize<Any>(keyBytes)!!
-                val xValue = serializer.deserialize<Any>(valueBytes)!!
-                load(xKey, xValue)
-            }
-        }
-
-        onSaveFunc = if (onSave != null) {
-            onSave
-        } else {
-            { key, value, save ->
-                val xKey = serializer.serialize(key)!!.encodeToBase58String()
-                val xValue = serializer.serialize(value)!!.encodeToBase58String()
-                save(xKey, xValue)
-            }
         }
 
         // Make sure that the timer is run on shutdown. A HARD shutdown will just POW! kill it, a "nice" shutdown will run the hook
@@ -132,7 +103,7 @@ abstract class StringStore(
             synchronized(dbFile) {
                 if (value != null) {
                     try {
-                        onSaveFunc(key, value, saveFunc)
+                        onSave(serializer, key, value, saveFunc)
                     } catch (e: Exception) {
                         logger.error("Unable to parse property ($dbFile) [$key] : $value", e)
                     }
@@ -168,7 +139,7 @@ abstract class StringStore(
                         save(k, v.toString())
                     } else {
                         try {
-                            onSaveFunc(k, v, saveFunc)
+                            onSave(serializer, k, v, saveFunc)
                         } catch (e: Exception) {
                             logger.error("Unable to parse property ($dbFile) [$k] : $v", e)
                         }
@@ -287,15 +258,12 @@ abstract class StringStore(
         if (autoLoad != other.autoLoad) return false
         if (readOnly != other.readOnly) return false
         if (readOnlyViolent != other.readOnlyViolent) return false
-        if (thread != other.thread) return false
         if (lastModifiedTime != other.lastModifiedTime) return false
         if (isDirty != other.isDirty) return false
-        if (onLoadFunc != other.onLoadFunc) return false
-        if (onSaveFunc != other.onSaveFunc) return false
-        if (loadFunc != other.loadFunc) return false
-        if (saveFunc != other.saveFunc) return false
+        if (serializer != other.serializer) return false   // class with lambda
+        if (onLoad != other.onLoad) return false   //lambda
+        if (onSave != other.onSave) return false   //lambda
         if (loadedProps != other.loadedProps) return false
-        if (serializer != other.serializer) return false
 
         return true
     }
@@ -305,15 +273,12 @@ abstract class StringStore(
         result = 31 * result + autoLoad.hashCode()
         result = 31 * result + readOnly.hashCode()
         result = 31 * result + readOnlyViolent.hashCode()
-        result = 31 * result + thread.hashCode()
         result = 31 * result + lastModifiedTime.hashCode()
         result = 31 * result + isDirty.hashCode()
-        result = 31 * result + onLoadFunc.hashCode()
-        result = 31 * result + onSaveFunc.hashCode()
-        result = 31 * result + loadFunc.hashCode()
-        result = 31 * result + saveFunc.hashCode()
+        result = 31 * result + serializer.hashCode() // class with lambda
+        result = 31 * result + onLoad.hashCode() //lambda
+        result = 31 * result + onSave.hashCode() //lambda
         result = 31 * result + loadedProps.hashCode()
-        result = 31 * result + serializer.hashCode()
         return result
     }
 }
