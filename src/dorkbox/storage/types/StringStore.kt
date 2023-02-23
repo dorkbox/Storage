@@ -24,7 +24,7 @@ import dorkbox.storage.serializer.SerializerBytes
 import mu.KLogger
 import java.io.File
 import java.io.IOException
-import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.*
 
 /**
  * Java STRING file storage system
@@ -277,5 +277,43 @@ abstract class StringStore(
         save()
 
         loadedProps.clear()
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is StringStore) return false
+
+        if (dbFile != other.dbFile) return false
+        if (autoLoad != other.autoLoad) return false
+        if (readOnly != other.readOnly) return false
+        if (readOnlyViolent != other.readOnlyViolent) return false
+        if (thread != other.thread) return false
+        if (lastModifiedTime != other.lastModifiedTime) return false
+        if (isDirty != other.isDirty) return false
+        if (onLoadFunc != other.onLoadFunc) return false
+        if (onSaveFunc != other.onSaveFunc) return false
+        if (loadFunc != other.loadFunc) return false
+        if (saveFunc != other.saveFunc) return false
+        if (loadedProps != other.loadedProps) return false
+        if (serializer != other.serializer) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = dbFile.hashCode()
+        result = 31 * result + autoLoad.hashCode()
+        result = 31 * result + readOnly.hashCode()
+        result = 31 * result + readOnlyViolent.hashCode()
+        result = 31 * result + thread.hashCode()
+        result = 31 * result + lastModifiedTime.hashCode()
+        result = 31 * result + isDirty.hashCode()
+        result = 31 * result + onLoadFunc.hashCode()
+        result = 31 * result + onSaveFunc.hashCode()
+        result = 31 * result + loadFunc.hashCode()
+        result = 31 * result + saveFunc.hashCode()
+        result = 31 * result + loadedProps.hashCode()
+        result = 31 * result + serializer.hashCode()
+        return result
     }
 }

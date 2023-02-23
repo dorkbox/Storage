@@ -104,4 +104,24 @@ class PropertyStore(
 
         propertiesOnDisk.clear()
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is PropertyStore) return false
+        if (!super.equals(other)) return false
+
+        if (propertiesOnDisk != other.propertiesOnDisk) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = super.hashCode()
+        result = 31 * result + propertiesOnDisk.hashCode()
+        return result
+    }
+
+    override fun toString(): String {
+        return "PropertyStore(file=$propertiesOnDisk)"
+    }
 }

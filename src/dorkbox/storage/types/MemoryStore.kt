@@ -18,7 +18,7 @@ package dorkbox.storage.types
 import dorkbox.storage.Storage
 import mu.KLogger
 import java.io.File
-import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.*
 
 /**
  * In-Memory storage
@@ -69,5 +69,21 @@ class MemoryStore(logger: KLogger) : Storage(logger) {
 
     override fun close() {
     }
-}
 
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is MemoryStore) return false
+
+        if (map != other.map) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return map.hashCode()
+    }
+
+    override fun toString(): String {
+        return "MemoryStore(map=${map.hashCode()})"
+    }
+}
