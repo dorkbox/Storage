@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 dorkbox, llc
+ * Copyright 2023 dorkbox, llc
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -128,7 +128,9 @@ abstract class Storage(val logger: KLogger) : AutoCloseable {
     abstract override fun close()
 
     interface Builder {
-        /** true if the backing storage type uses strings for everything, or false if it uses something else */
+        /**
+         * true if the backing storage type uses strings for everything, or false if it uses something else
+         */
         val isStringBased: Boolean
 
         /**
@@ -178,6 +180,7 @@ abstract class Storage(val logger: KLogger) : AutoCloseable {
          var serializer: SerializerBytes = defaultSerializer
 
          var shared = false
+
          @Volatile
          var sharedBuild: Storage? = null
 
@@ -278,9 +281,9 @@ abstract class Storage(val logger: KLogger) : AutoCloseable {
          }
 
          override fun hashCode(): Int {
-             var result = onLoad?.hashCode() ?: 0  //lambda
-             result = 31 * result + (onSave?.hashCode() ?: 0)  //lambda
-             result = 31 * result + serializer.hashCode()  //lambda
+             var result = onLoad.hashCode()
+             result = 31 * result + onSave.hashCode()
+             result = 31 * result + serializer.hashCode()
              result = 31 * result + shared.hashCode()
              result = 31 * result + (sharedBuild?.hashCode() ?: 0)
              result = 31 * result + logger.hashCode()
@@ -445,12 +448,32 @@ abstract class Storage(val logger: KLogger) : AutoCloseable {
 //     * JSON file storage system
 //     */
 //    class Json : Storage.FileBuilder<Json>() {
+//        companion object {
+//            // property files MUST load via strings.
+//            val defaultOnLoad: AccessFunc = { serializer, key, value, load ->
+//                val keyBytes = (key as String).decodeBase58()
+//                val valueBytes = (value as String).decodeBase58()
+//
+//                val xKey = serializer.deserialize<Any>(keyBytes)!!
+//                val xValue = serializer.deserialize<Any>(valueBytes)
+//                load(xKey, xValue)
+//            }
+//
+//            val defaultOnSave: AccessFunc = { serializer, key, value, save ->
+//                val xKey = serializer.serialize(key).encodeToBase58String()
+//                val xValue = serializer.serialize(value).encodeToBase58String()
+//                save(xKey, xValue)
+//            }
+//        }
+//
 //        private var autoLoad = false
+//
+//        override var onLoad: AccessFunc = defaultOnLoad
+//        override var onSave: AccessFunc = defaultOnSave
 //
 //        override fun build(): Storage {
 //            return manageShared {
-//                JsonStore(file.absoluteFile, autoLoad, readOnly, readOnlyViolent, logger,
-//                    onLoad, onSave)
+//                JsonStore(file.absoluteFile, autoLoad, readOnly, readOnlyViolent, logger, onLoad, onSave)
 //            }
 //        }
 //

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 dorkbox, llc
+ * Copyright 2023 dorkbox, llc
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -227,18 +227,25 @@ class StorageTest {
 
 //    @Test
 //    fun json() {
-//        val tmp = tmp().newFile()
+////        val tmp = tmp().newFile()
+//        val tmp = File("json.config")
+//
+//        val logger = KotlinLogging.logger("test")
 //
 //        val tester = Tester("key1", "value1")
 //
+//        // lambda's do NOT evaluate equality. Only reference equality.
+//        val serializer = SerializerBytes {
+//            register(Tester::class.java, TesterSerializer())
+//        }
+//
 //        // note: we want to auto-close the storage after we write/read it
-//        val storage = Storage.Json().file(tmp).register(Tester::class.java, TesterSerializer()).build()
+//        val storage = Storage.Json().file(tmp).logger(logger).serializer(serializer).build()
 //        storage.use {
 //            it["key1"] = tester
 //        }
 //
-//
-//        val storage2 = Storage.Property().file(tmp).register(Tester::class.java, TesterSerializer()).build()
+//        val storage2 = Storage.Json().file(tmp).logger(logger).serializer(serializer).build()
 //
 //        val tes: Tester? = storage2.use {
 //            it["key1"]

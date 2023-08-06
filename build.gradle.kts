@@ -93,12 +93,12 @@ dependencies {
     api("org.slf4j:slf4j-api:2.0.7")
 
 
-    api("com.dorkbox:Updates:1.1")
-
-    api("com.dorkbox:ByteUtilities:1.8")
-    api("com.dorkbox:Serializers:2.8")
-    api("com.dorkbox:ObjectPool:4.3")
+    api("com.dorkbox:ByteUtilities:1.13")
+    api("com.dorkbox:Json:1.1")
     api("com.dorkbox:MinLog:2.5")
+    api("com.dorkbox:ObjectPool:4.3")
+    api("com.dorkbox:Serializers:2.9")
+    api("com.dorkbox:Updates:1.1")
 
     api("com.esotericsoftware:kryo:5.5.0") {
         exclude("com.esotericsoftware", "minlog") // we use our own minlog, that logs to SLF4j instead
@@ -114,7 +114,6 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     testImplementation("ch.qos.logback:logback-classic:1.4.5")
     testImplementation("org.agrona:agrona:1.14.0")
-
 }
 
 publishToSonatype {

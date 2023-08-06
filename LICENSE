@@ -47,22 +47,7 @@
        Kotlin Compiler, Test Data+Libraries, and Tools repository contain third-party code, to which different licenses may apply
        See: https://github.com/JetBrains/kotlin/blob/master/license/README.md
 
-     - Updates - Software Update Management
-       [The Apache Software License, Version 2.0]
-       https://git.dorkbox.com/dorkbox/Updates
-       Copyright 2021
-         Dorkbox LLC
-
-       Extra license information
-         - Kotlin - 
-           [The Apache Software License, Version 2.0]
-           https://github.com/JetBrains/kotlin
-           Copyright 2020
-             JetBrains s.r.o. and Kotlin Programming Language contributors
-           Kotlin Compiler, Test Data+Libraries, and Tools repository contain third-party code, to which different licenses may apply
-           See: https://github.com/JetBrains/kotlin/blob/master/license/README.md
-
-     - ByteUtilties - Byte manipulation and Unsigned Number Utilities
+     - ByteUtils - Byte manipulation and SHA/xxHash utilities
        [The Apache Software License, Version 2.0]
        https://git.dorkbox.com/dorkbox/ByteUtilities
        Copyright 2023
@@ -119,13 +104,203 @@
 
              - Objenesis - 
                [The Apache Software License, Version 2.0]
-               http://objenesis.org
+               https://github.com/easymock/objenesis
                  Objenesis Team and all contributors
 
              - MinLog-SLF4J - 
                [BSD 3-Clause License]
                https://github.com/EsotericSoftware/minlog
                  Nathan Sweet
+
+         - LZ4 and xxHash - LZ4 compression for Java, based on Yann Collet's work
+           [The Apache Software License, Version 2.0]
+           https://github.com/lz4/lz4
+           Copyright 2023
+             Yann Collet
+             Adrien Grand
+
+         - Updates - Software Update Management
+           [The Apache Software License, Version 2.0]
+           https://git.dorkbox.com/dorkbox/Updates
+           Copyright 2021
+             Dorkbox LLC
+
+           Extra license information
+             - Kotlin - 
+               [The Apache Software License, Version 2.0]
+               https://github.com/JetBrains/kotlin
+               Copyright 2020
+                 JetBrains s.r.o. and Kotlin Programming Language contributors
+               Kotlin Compiler, Test Data+Libraries, and Tools repository contain third-party code, to which different licenses may apply
+               See: https://github.com/JetBrains/kotlin/blob/master/license/README.md
+
+     - Json - Lightweight Kotlin/JSON serialization
+       [The Apache Software License, Version 2.0]
+       https://git.dorkbox.com/dorkbox/Json
+       Copyright 2023
+         Dorkbox LLC
+
+       Extra license information
+         - LibGDX Json Utils - Java object graphs, to and from JSON automatically
+           [The Apache Software License, Version 2.0]
+           https://github.com/libgdx/libgdx/blob/master/gdx/src/com/badlogic/gdx/utils
+           Copyright 2011
+             Mario Zechner
+             Nathan Sweet
+
+         - Kotlin - 
+           [The Apache Software License, Version 2.0]
+           https://github.com/JetBrains/kotlin
+           Copyright 2020
+             JetBrains s.r.o. and Kotlin Programming Language contributors
+           Kotlin Compiler, Test Data+Libraries, and Tools repository contain third-party code, to which different licenses may apply
+           See: https://github.com/JetBrains/kotlin/blob/master/license/README.md
+
+         - Updates - Software Update Management
+           [The Apache Software License, Version 2.0]
+           https://git.dorkbox.com/dorkbox/Updates
+           Copyright 2021
+             Dorkbox LLC
+
+           Extra license information
+             - Kotlin - 
+               [The Apache Software License, Version 2.0]
+               https://github.com/JetBrains/kotlin
+               Copyright 2020
+                 JetBrains s.r.o. and Kotlin Programming Language contributors
+               Kotlin Compiler, Test Data+Libraries, and Tools repository contain third-party code, to which different licenses may apply
+               See: https://github.com/JetBrains/kotlin/blob/master/license/README.md
+
+         - Collections - Collection types and utilities to enhance the default collections.
+           [The Apache Software License, Version 2.0]
+           https://git.dorkbox.com/dorkbox/Collections
+           Copyright 2023
+             Dorkbox LLC
+
+           Extra license information
+             - Bias, BinarySearch - 
+               [MIT License]
+               https://git.dorkbox.com/dorkbox/Collections
+               https://github.com/timboudreau/util
+               Copyright 2013
+                 Tim Boudreau
+
+             - ConcurrentEntry - 
+               [The Apache Software License, Version 2.0]
+               https://git.dorkbox.com/dorkbox/Collections
+               Copyright 2016
+                 bennidi
+                 dorkbox
+
+             - Collection Utilities (Array, ArrayMap, BooleanArray, ByteArray, CharArray, FloatArray, IdentityMap, IntArray, IntFloatMap, IntIntMap, IntMap, IntSet, LongArray, LongMap, ObjectFloatMap, ObjectIntMap, ObjectMap, ObjectSet, OrderedMap, OrderedSet) - 
+               [The Apache Software License, Version 2.0]
+               https://git.dorkbox.com/dorkbox/Collections
+               https://github.com/libgdx/libgdx/blob/master/gdx/src/com/badlogic/gdx/utils
+               Copyright 2011
+                 LibGDX
+                 Mario Zechner (badlogicgames@gmail.com)
+                 Nathan Sweet (nathan.sweet@gmail.com)
+
+             - Predicate - 
+               [The Apache Software License, Version 2.0]
+               https://git.dorkbox.com/dorkbox/Collections
+               https://github.com/libgdx/libgdx/blob/master/gdx/src/com/badlogic/gdx/utils
+               Copyright 2011
+                 LibGDX
+                 Mario Zechner (badlogicgames@gmail.com)
+                 Nathan Sweet (nathan.sweet@gmail.com)
+                 xoppa
+
+             - Select, QuickSelect - 
+               [The Apache Software License, Version 2.0]
+               https://git.dorkbox.com/dorkbox/Collections
+               https://github.com/libgdx/libgdx/blob/master/gdx/src/com/badlogic/gdx/utils
+               Copyright 2011
+                 LibGDX
+                 Mario Zechner (badlogicgames@gmail.com)
+                 Nathan Sweet (nathan.sweet@gmail.com)
+                 Jon Renner
+
+             - Kotlin - 
+               [The Apache Software License, Version 2.0]
+               https://github.com/JetBrains/kotlin
+               Copyright 2020
+                 JetBrains s.r.o. and Kotlin Programming Language contributors
+               Kotlin Compiler, Test Data+Libraries, and Tools repository contain third-party code, to which different licenses may apply
+               See: https://github.com/JetBrains/kotlin/blob/master/license/README.md
+
+             - Updates - Software Update Management
+               [The Apache Software License, Version 2.0]
+               https://git.dorkbox.com/dorkbox/Updates
+               Copyright 2021
+                 Dorkbox LLC
+
+               Extra license information
+                 - Kotlin - 
+                   [The Apache Software License, Version 2.0]
+                   https://github.com/JetBrains/kotlin
+                   Copyright 2020
+                     JetBrains s.r.o. and Kotlin Programming Language contributors
+                   Kotlin Compiler, Test Data+Libraries, and Tools repository contain third-party code, to which different licenses may apply
+                   See: https://github.com/JetBrains/kotlin/blob/master/license/README.md
+
+     - MinLog - Drop-in replacement for MinLog to log through SLF4j.
+       [BSD 3-Clause License]
+       https://git.dorkbox.com/dorkbox/MinLog-SLF4J
+       https://github.com/EsotericSoftware/minlog
+       Copyright 2023
+         Dorkbox LLC
+         Nathan Sweet
+         Dan Brown
+
+       Extra license information
+         - SLF4J - Simple facade or abstraction for various logging frameworks
+           [MIT License]
+           https://www.slf4j.org
+           Copyright 2023
+             QOS.ch
+
+         - Updates - Software Update Management
+           [The Apache Software License, Version 2.0]
+           https://git.dorkbox.com/dorkbox/Updates
+           Copyright 2021
+             Dorkbox LLC
+
+           Extra license information
+             - Kotlin - 
+               [The Apache Software License, Version 2.0]
+               https://github.com/JetBrains/kotlin
+               Copyright 2020
+                 JetBrains s.r.o. and Kotlin Programming Language contributors
+               Kotlin Compiler, Test Data+Libraries, and Tools repository contain third-party code, to which different licenses may apply
+               See: https://github.com/JetBrains/kotlin/blob/master/license/README.md
+
+     - ObjectPool - Fast, lightweight, and compatible blocking/non-blocking/soft-reference object pool for Java 8+
+       [The Apache Software License, Version 2.0]
+       https://git.dorkbox.com/dorkbox/ObjectPool
+       Copyright 2023
+         Dorkbox LLC
+
+       Extra license information
+         - kotlinx.coroutines - Library support for Kotlin coroutines with multiplatform support
+           [The Apache Software License, Version 2.0]
+           https://github.com/Kotlin/kotlinx.coroutines
+           Copyright 2023
+             JetBrains s.r.o.
+
+         - Conversant Disruptor - Disruptor is the highest performing intra-thread transfer mechanism available in Java.
+           [The Apache Software License, Version 2.0]
+           https://github.com/conversant/disruptor
+           Copyright 2023
+             Conversant, Inc
+
+         - Kotlin - 
+           [The Apache Software License, Version 2.0]
+           https://github.com/JetBrains/kotlin
+           Copyright 2020
+             JetBrains s.r.o. and Kotlin Programming Language contributors
+           Kotlin Compiler, Test Data+Libraries, and Tools repository contain third-party code, to which different licenses may apply
+           See: https://github.com/JetBrains/kotlin/blob/master/license/README.md
 
          - Updates - Software Update Management
            [The Apache Software License, Version 2.0]
@@ -207,25 +382,13 @@
                Kotlin Compiler, Test Data+Libraries, and Tools repository contain third-party code, to which different licenses may apply
                See: https://github.com/JetBrains/kotlin/blob/master/license/README.md
 
-     - ObjectPool - Fast, lightweight, and compatible blocking/non-blocking/soft-reference object pool for Java 8+
+     - Updates - Software Update Management
        [The Apache Software License, Version 2.0]
-       https://git.dorkbox.com/dorkbox/ObjectPool
-       Copyright 2023
+       https://git.dorkbox.com/dorkbox/Updates
+       Copyright 2021
          Dorkbox LLC
 
        Extra license information
-         - kotlinx.coroutines - Library support for Kotlin coroutines with multiplatform support
-           [The Apache Software License, Version 2.0]
-           https://github.com/Kotlin/kotlinx.coroutines
-           Copyright 2023
-             JetBrains s.r.o.
-
-         - Conversant Disruptor - Disruptor is the highest performing intra-thread transfer mechanism available in Java.
-           [The Apache Software License, Version 2.0]
-           https://github.com/conversant/disruptor
-           Copyright 2023
-             Conversant, Inc
-
          - Kotlin - 
            [The Apache Software License, Version 2.0]
            https://github.com/JetBrains/kotlin
@@ -233,49 +396,3 @@
              JetBrains s.r.o. and Kotlin Programming Language contributors
            Kotlin Compiler, Test Data+Libraries, and Tools repository contain third-party code, to which different licenses may apply
            See: https://github.com/JetBrains/kotlin/blob/master/license/README.md
-
-         - Updates - Software Update Management
-           [The Apache Software License, Version 2.0]
-           https://git.dorkbox.com/dorkbox/Updates
-           Copyright 2021
-             Dorkbox LLC
-
-           Extra license information
-             - Kotlin - 
-               [The Apache Software License, Version 2.0]
-               https://github.com/JetBrains/kotlin
-               Copyright 2020
-                 JetBrains s.r.o. and Kotlin Programming Language contributors
-               Kotlin Compiler, Test Data+Libraries, and Tools repository contain third-party code, to which different licenses may apply
-               See: https://github.com/JetBrains/kotlin/blob/master/license/README.md
-
-     - MinLog - Drop-in replacement for MinLog to log through SLF4j.
-       [BSD 3-Clause License]
-       https://git.dorkbox.com/dorkbox/MinLog-SLF4J
-       https://github.com/EsotericSoftware/minlog
-       Copyright 2023
-         Dorkbox LLC
-         Nathan Sweet
-         Dan Brown
-
-       Extra license information
-         - SLF4J - Simple facade or abstraction for various logging frameworks
-           [MIT License]
-           https://www.slf4j.org
-           Copyright 2023
-             QOS.ch
-
-         - Updates - Software Update Management
-           [The Apache Software License, Version 2.0]
-           https://git.dorkbox.com/dorkbox/Updates
-           Copyright 2021
-             Dorkbox LLC
-
-           Extra license information
-             - Kotlin - 
-               [The Apache Software License, Version 2.0]
-               https://github.com/JetBrains/kotlin
-               Copyright 2020
-                 JetBrains s.r.o. and Kotlin Programming Language contributors
-               Kotlin Compiler, Test Data+Libraries, and Tools repository contain third-party code, to which different licenses may apply
-               See: https://github.com/JetBrains/kotlin/blob/master/license/README.md
