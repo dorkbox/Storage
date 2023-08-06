@@ -11,7 +11,7 @@ Maven Info
     <dependency>
       <groupId>com.dorkbox</groupId>
       <artifactId>Storage</artifactId>
-      <version>1.5</version>
+      <version>1.6</version>
     </dependency>
 </dependencies>
 ```
@@ -21,7 +21,7 @@ Gradle Info
 ```
 dependencies {
     ...
-    compile "com.dorkbox:Storage:1.5"
+    compile "com.dorkbox:Storage:1.6"
 }
 ```
 
