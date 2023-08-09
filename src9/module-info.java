@@ -1,5 +1,6 @@
 module dorkbox.storage {
     exports dorkbox.storage;
+    exports dorkbox.storage.serializer;
     exports dorkbox.storage.types;
 
     requires transitive dorkbox.byteUtils;
