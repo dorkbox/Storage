@@ -119,6 +119,13 @@
              Yann Collet
              Adrien Grand
 
+         - XZ for Java - Complete implementation of XZ data compression in pure Java
+           [Public Domain, per Creative Commons CC0]
+           https://tukaani.org/xz/java.html
+           Copyright 2023
+             Lasse Collin
+             Igor Pavlov
+
          - Updates - Software Update Management
            [The Apache Software License, Version 2.0]
            https://git.dorkbox.com/dorkbox/Updates
