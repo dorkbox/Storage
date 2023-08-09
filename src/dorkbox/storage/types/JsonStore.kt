@@ -214,7 +214,13 @@ class JsonStore(
      * Closes this storage (and if applicable, flushes it's content to disk)
      */
     override fun close() {
-        Runtime.getRuntime().removeShutdownHook(thread)
+        if (Thread.currentThread() != thread) {
+            try {
+                Runtime.getRuntime().removeShutdownHook(thread)
+            }
+            catch (ignored: Exception) { }
+            catch (ignored: RuntimeException) { }
+        }
         save()
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 dorkbox, llc
+ * Copyright 2023 dorkbox, llc
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -244,7 +244,14 @@ abstract class StringStore(
      * Closes this storage (and if applicable, flushes its content to disk)
      */
     override fun close() {
-        Runtime.getRuntime().removeShutdownHook(thread)
+        if (Thread.currentThread() != thread) {
+            try {
+                Runtime.getRuntime().removeShutdownHook(thread)
+            }
+            catch (ignored: Exception) { }
+            catch (ignored: RuntimeException) { }
+        }
+
         save()
 
         loadedProps.clear()
