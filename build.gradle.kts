@@ -24,7 +24,7 @@ gradle.startParameter.showStacktrace = ShowStacktrace.ALWAYS   // always show th
 
 plugins {
     id("com.dorkbox.GradleUtils") version "3.17"
-    id("com.dorkbox.Licensing") version "2.24"
+    id("com.dorkbox.Licensing") version "2.26"
     id("com.dorkbox.VersionUpdate") version "2.8"
     id("com.dorkbox.GradlePublish") version "1.18"
 
@@ -80,6 +80,13 @@ tasks.jar.get().apply {
 }
 
 dependencies {
+    api("com.dorkbox:ByteUtilities:1.14")
+    api("com.dorkbox:Json:1.6")
+    api("com.dorkbox:MinLog:2.5")
+    api("com.dorkbox:ObjectPool:4.3")
+    api("com.dorkbox:Serializers:2.9")
+    api("com.dorkbox:Updates:1.1")
+
     // really fast storage
     // https://github.com/lmdbjava/lmdbjava
 //    compileOnly("org.lmdbjava:lmdbjava:0.8.2")
@@ -90,15 +97,8 @@ dependencies {
 
     // https://github.com/MicroUtils/kotlin-logging
     api("io.github.microutils:kotlin-logging:3.0.5")
-    api("org.slf4j:slf4j-api:2.0.7")
+    implementation("org.slf4j:slf4j-api:2.0.7")
 
-
-    api("com.dorkbox:ByteUtilities:1.14")
-    api("com.dorkbox:Json:1.3")
-    api("com.dorkbox:MinLog:2.5")
-    api("com.dorkbox:ObjectPool:4.3")
-    api("com.dorkbox:Serializers:2.9")
-    api("com.dorkbox:Updates:1.1")
 
     api("com.esotericsoftware:kryo:5.5.0") {
         exclude("com.esotericsoftware", "minlog") // we use our own minlog, that logs to SLF4j instead
