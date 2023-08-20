@@ -33,7 +33,7 @@ abstract class Storage(val logger: KLogger) : AutoCloseable {
         /**
          * Gets the version number.
          */
-        const val version = "1.7"
+        const val version = "1.8"
 
         init {
             // Add this project to the updates system, which verifies this class + UUID + version information

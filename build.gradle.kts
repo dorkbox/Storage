@@ -35,7 +35,7 @@ object Extras {
     // set for the project
     const val description = "Storage system for Java"
     const val group = "com.dorkbox"
-    const val version = "1.7"
+    const val version = "1.8"
 
     // set as project.ext
     const val name = "Storage"
