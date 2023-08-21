@@ -35,7 +35,7 @@ object Extras {
     // set for the project
     const val description = "Storage system for Java"
     const val group = "com.dorkbox"
-    const val version = "1.8"
+    const val version = "1.9"
 
     // set as project.ext
     const val name = "Storage"
@@ -80,8 +80,8 @@ tasks.jar.get().apply {
 }
 
 dependencies {
-    api("com.dorkbox:ByteUtilities:1.14")
-    api("com.dorkbox:Json:1.6")
+    api("com.dorkbox:ByteUtilities:2.0")
+    api("com.dorkbox:Json:1.7")
     api("com.dorkbox:MinLog:2.5")
     api("com.dorkbox:ObjectPool:4.3")
     api("com.dorkbox:Serializers:2.9")
