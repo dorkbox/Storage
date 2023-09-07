@@ -30,12 +30,14 @@ plugins {
 
     kotlin("jvm") version "1.8.0"
 }
-
+// TODO: - have an HTTP put/fetch based storage. (where storage can run as the client and server).
+//       - allow bridging between storage types so http server can store as XYZ, easily
+//       - make this also integrate with the cache?
 object Extras {
     // set for the project
     const val description = "Storage system for Java"
     const val group = "com.dorkbox"
-    const val version = "1.9"
+    const val version = "1.10"
 
     // set as project.ext
     const val name = "Storage"
@@ -83,7 +85,7 @@ dependencies {
     api("com.dorkbox:ByteUtilities:2.0")
     api("com.dorkbox:Json:1.7")
     api("com.dorkbox:MinLog:2.5")
-    api("com.dorkbox:ObjectPool:4.3")
+    api("com.dorkbox:ObjectPool:4.4")
     api("com.dorkbox:Serializers:2.9")
     api("com.dorkbox:Updates:1.1")
 
