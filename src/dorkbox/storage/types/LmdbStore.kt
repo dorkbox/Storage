@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 dorkbox, llc
+ * Copyright 2023 dorkbox, llc
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 package dorkbox.storage.types
 
 import dorkbox.storage.Storage
-import mu.KLogger
+import org.slf4j.Logger
 import java.io.File
 
 /**
@@ -27,7 +27,7 @@ import java.io.File
 class LmdbStore(
     val dbFile: File,
     val readOnly: Boolean,
-    logger: KLogger
+    logger: Logger
 ) : Storage(logger) {
 
 //    private val env: Env<ByteArray>

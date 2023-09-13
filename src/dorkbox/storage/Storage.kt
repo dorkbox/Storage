@@ -20,15 +20,15 @@ import dorkbox.bytes.encodeToBase58String
 import dorkbox.storage.serializer.SerializerBytes
 import dorkbox.storage.types.MemoryStore
 import dorkbox.storage.types.PropertyStore
-import mu.KLogger
-import mu.KotlinLogging
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.slf4j.helpers.NOPLogger
 import java.io.File
 
 
 typealias AccessFunc = ((serializer: SerializerBytes, key: Any, value: Any?, load: (key: Any, value: Any?) -> Unit) -> Unit)
 
-abstract class Storage(val logger: KLogger) : AutoCloseable {
+abstract class Storage(val logger: Logger) : AutoCloseable {
     companion object {
         /**
          * Gets the version number.
@@ -42,7 +42,7 @@ abstract class Storage(val logger: KLogger) : AutoCloseable {
 
         const val versionTag = "__VERSION__"
 
-        private val defaultLogger: KLogger = KotlinLogging.logger(NOPLogger.NOP_LOGGER)
+        private val defaultLogger: Logger = NOPLogger.NOP_LOGGER
     }
 
     fun init(initMessage: String) {
@@ -51,7 +51,7 @@ abstract class Storage(val logger: KLogger) : AutoCloseable {
             setVersion(0L)
         }
 
-        KotlinLogging.logger("Storage").info(initMessage)
+        LoggerFactory.getLogger("Storage").info(initMessage)
     }
 
     /**
@@ -165,7 +165,7 @@ abstract class Storage(val logger: KLogger) : AutoCloseable {
         /**
          * Assigns a logger to use for the storage system. The default is a No Operation (NOP) logger which will ignore everything.
          */
-        fun logger(logger: KLogger): Builder
+        fun logger(logger: Logger): Builder
     }
 
 
@@ -184,7 +184,7 @@ abstract class Storage(val logger: KLogger) : AutoCloseable {
          @Volatile
          var sharedBuild: Storage? = null
 
-         var logger: KLogger = defaultLogger
+         var logger: Logger = defaultLogger
 
          var file = File("storage.db")
          var readOnly = false
@@ -224,7 +224,7 @@ abstract class Storage(val logger: KLogger) : AutoCloseable {
              return this
          }
 
-         override fun logger(logger: KLogger): B {
+         override fun logger(logger: Logger): B {
              this.logger = logger
              return this as B
          }
@@ -304,7 +304,7 @@ abstract class Storage(val logger: KLogger) : AutoCloseable {
      * This storage system DOES NOT care about serializing data, so `register` has no effect.
      */
     class Memory : Builder {
-        private var logger: KLogger = defaultLogger
+        private var logger: Logger = defaultLogger
 
         private var shared = false
         @Volatile private var sharedBuild: Storage? = null
@@ -344,7 +344,7 @@ abstract class Storage(val logger: KLogger) : AutoCloseable {
         /**
          * Assigns a logger to use for the storage system. If null, then only errors will be logged to the error console.
          */
-        override fun logger(logger: KLogger): Builder {
+        override fun logger(logger: Logger): Builder {
             this.logger = logger
             return this
         }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 dorkbox, llc
+ * Copyright 2023 dorkbox, llc
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@ package dorkbox.storage.types
 
 import dorkbox.storage.AccessFunc
 import dorkbox.storage.serializer.SerializerBytes
-import mu.KLogger
+import org.slf4j.Logger
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
@@ -31,7 +31,7 @@ class PropertyStore(
     autoLoad: Boolean,
     readOnly: Boolean,
     readOnlyViolent: Boolean,
-    logger: KLogger,
+    logger: Logger,
     serializer: SerializerBytes,
     onLoad: AccessFunc,
     onSave: AccessFunc,

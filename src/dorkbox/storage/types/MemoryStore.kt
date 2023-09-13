@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 dorkbox, llc
+ * Copyright 2023 dorkbox, llc
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,14 +16,14 @@
 package dorkbox.storage.types
 
 import dorkbox.storage.Storage
-import mu.KLogger
+import org.slf4j.Logger
 import java.io.File
 import java.util.concurrent.*
 
 /**
  * In-Memory storage
  */
-class MemoryStore(logger: KLogger) : Storage(logger) {
+class MemoryStore(logger: Logger) : Storage(logger) {
     private val map = ConcurrentHashMap<Any, Any>()
 
     init {

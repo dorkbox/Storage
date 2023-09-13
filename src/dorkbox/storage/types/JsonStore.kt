@@ -19,7 +19,7 @@ import dorkbox.json.JsonException
 import dorkbox.json.OutputType
 import dorkbox.storage.AccessFunc
 import dorkbox.storage.Storage
-import mu.KLogger
+import org.slf4j.Logger
 import java.io.File
 import java.io.IOException
 import java.util.concurrent.*
@@ -32,7 +32,7 @@ class JsonStore(
     val autoLoad: Boolean,
     val readOnly: Boolean,
     val readOnlyViolent: Boolean,
-    logger: KLogger,
+    logger: Logger,
     onLoad: AccessFunc,
     onSave: AccessFunc,
 ) : Storage(logger) {

@@ -97,9 +97,7 @@ dependencies {
 //    compileOnly("net.openhft:chronicle-map:3.21.86")
 
 
-    // https://github.com/MicroUtils/kotlin-logging
-    api("io.github.microutils:kotlin-logging:3.0.5")
-    implementation("org.slf4j:slf4j-api:2.0.7")
+    implementation("org.slf4j:slf4j-api:2.0.9")
 
 
     api("com.esotericsoftware:kryo:5.5.0") {

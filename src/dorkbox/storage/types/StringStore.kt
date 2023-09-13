@@ -18,7 +18,7 @@ package dorkbox.storage.types
 import dorkbox.storage.AccessFunc
 import dorkbox.storage.Storage
 import dorkbox.storage.serializer.SerializerBytes
-import mu.KLogger
+import org.slf4j.Logger
 import java.io.File
 import java.io.IOException
 import java.util.concurrent.*
@@ -31,7 +31,7 @@ abstract class StringStore(
     val autoLoad: Boolean,
     val readOnly: Boolean,
     val readOnlyViolent: Boolean,
-    logger: KLogger,
+    logger: Logger,
     val serializer: SerializerBytes,
     val onLoad: AccessFunc,
     val onSave: AccessFunc,

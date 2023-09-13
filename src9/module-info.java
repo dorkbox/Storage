@@ -12,7 +12,6 @@ module dorkbox.storage {
 
     requires transitive com.esotericsoftware.kryo;
     requires transitive org.slf4j;
-    requires transitive io.github.microutils.kotlinlogging;
 
     requires transitive kotlin.stdlib;
 }

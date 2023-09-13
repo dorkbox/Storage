@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 dorkbox, llc
+ * Copyright 2023 dorkbox, llc
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ import com.esotericsoftware.kryo.io.ByteBufferOutput
 import com.esotericsoftware.kryo.io.Input
 import com.esotericsoftware.kryo.io.Output
 import dorkbox.storage.Storage
-import mu.KLogger
+import org.slf4j.Logger
 import java.io.File
 
 /**
@@ -31,7 +31,7 @@ import java.io.File
 class ChronicleMapStore(
     val dbFile: File,
     val readOnly: Boolean,
-    logger: KLogger
+    logger: Logger
 ) : Storage(logger) {
 
 //    private val map = ChronicleMap.of(String::class.java, ByteArray::class.java)
