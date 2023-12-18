@@ -27,12 +27,6 @@
            https://github.com/EsotericSoftware/minlog
              Nathan Sweet
 
-     - SLF4J - Simple facade or abstraction for various logging frameworks
-       [MIT License]
-       https://www.slf4j.org
-       Copyright 2023
-         QOS.ch
-
      - Kotlin - 
        [The Apache Software License, Version 2.0]
        https://github.com/JetBrains/kotlin
@@ -40,6 +34,12 @@
          JetBrains s.r.o. and Kotlin Programming Language contributors
        Kotlin Compiler, Test Data+Libraries, and Tools repository contain third-party code, to which different licenses may apply
        See: https://github.com/JetBrains/kotlin/blob/master/license/README.md
+
+     - SLF4J - Simple facade or abstraction for various logging frameworks
+       [MIT License]
+       https://www.slf4j.org
+       Copyright 2023
+         QOS.ch
 
      - ByteUtilities - Byte manipulation and SHA/xxHash utilities
        [The Apache Software License, Version 2.0]
@@ -257,7 +257,7 @@
        Extra license information
          - SLF4J - Simple facade or abstraction for various logging frameworks
            [MIT License]
-           https://www.slf4j.org
+           http://www.slf4j.org
            Copyright 2023
              QOS.ch
 
